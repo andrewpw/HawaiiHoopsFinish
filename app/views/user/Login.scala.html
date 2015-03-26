@@ -1,0 +1,7 @@
+@(title: String, loginForm: Form[forms.LoginForm], isLoggedIn: Boolean)
+
+@import bootstrap3._
+
+@Main(title, isLoggedIn) {
+    @loginform(routes.Users.postLogin(), loginForm("email"), loginForm("password"))
+}

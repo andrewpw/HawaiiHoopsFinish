@@ -1,0 +1,110 @@
+@(title: String, currentPage: com.avaje.ebean.Page[models.games.Game], searchForm: Form[views.formdata.SearchFormData], isLoggedIn: Boolean, sort: String)
+
+@import helper._
+@import bootstrap3._
+
+@import utils.Tags._
+
+
+@Main(title, isLoggedIn) {
+<div class="container">
+  <div class="well">
+  
+    <div class="row-search hidden-xs">
+    <div class="col-md-4">
+          @form(routes.Games.searchResults(0), 'class -> "form-horizontal") { 
+          <div class="input-group">
+              @simpleText(searchForm("term"),
+                  placeholder="Search by Name, Location, or players", 
+                  label = "", help = "")
+              <span class="input-group-btn">
+              <div class="form-group">
+                  <button type="submit" id="submitButton" class="btn btn-primary glyphicon glyphicon-search"></button>
+              </div>
+              </span>
+          </div>
+          }
+    </div>
+    
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Sort By<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="@routes.Games.allGames(0, "name asc")">Name</a></li>
+        <li><a href="@routes.Games.allGames(0, "location asc")">Location</a></li>
+        <hr>
+        <li><a href="@routes.Games.allGames(0, "gameTime asc")">All</a></li>
+      </ul>
+    </div>
+    
+    <a href="@routes.Games.createGame()" class="btn btn-primary btn-md pull-right" role="button">Create a Game</a> </br>
+    
+    </div>
+    
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Day</th>
+          <th>Time</th>
+          <th>Location</th>
+          <th>Type</th>
+          <!-- <th class="hidden-xs">Frequency</th> -->
+          <th class="hidden-xs">Skill Level</th>
+          <th class="hidden-xs">Number of Players</th>
+        </tr>
+      </thead>
+      <tbody data-link="row" class="rowlink">
+        @for(game <- currentPage.getList()) {
+        <tr>
+          <td class="visible-xs"><a href="@routes.Games.getGame(game.getId, slugify(game.getName()))">@game.getGameDateString()</a></td>
+          <td class="hidden-xs"><a href="@routes.Games.getGame(game.getId, slugify(game.getName()))">@game.getGameTime().monthOfYear().getAsText() @game.getDay(), @game.getYear()</a></td>
+          <td>@game.getGameTime().dayOfWeek().getAsText()</td>
+          <td>@game.getGameTimeString()</td>
+          @if(game.getType() == "Public" || game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
+            <td>@game.getLocation()</td>
+          } else {
+            <td></td>
+          }
+          <td>@game.getType()</td>
+          <!--  <td class="hidden-xs">@game.getFrequency()</td> -->
+          <td class="hidden-xs">@game.getAvgSklLvl()</td>
+          <td class="hidden-xs">@game.getListPlayers().size()</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    
+    <div id="pagination" class="pagination">
+          <ul class="pagination">
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                <a href="@routes.Games.allGames(currentPage.getPageIndex-1, sort)">&laquo;</a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                    <a>&laquo;</a>
+                </li>
+            }
+            @for(index <- 0 until currentPage.getTotalPageCount()) {
+                <li class="current">
+                
+                  <a href="@routes.Games.allGames(index, sort)">@(index+1)</a>
+                
+                </li>
+            }
+            @if(currentPage.hasNext) {
+                <li class="next">
+                  <a href="@routes.Games.allGames(currentPage.getPageIndex+1, sort)">&raquo;</a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a> &raquo;</a>
+                </li>
+            }
+          </ul>
+        </div>
+    </div>
+    </div>
+}

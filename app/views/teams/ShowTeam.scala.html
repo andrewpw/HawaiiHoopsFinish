@@ -1,0 +1,152 @@
+@(title: String, team: models.teams.Team, commentForm: Form[views.formdata.CommentForm], comments: List[Comment], loggedIn: Boolean)
+
+@import helper._
+@import bootstrap3._
+@import utils.Tags._
+
+@Main(title, loggedIn) {
+    <div class="container">
+    <div class="well">
+   <h4>@team.getTeamName()</h4>
+      <div class="row">
+      <div class="col-md-3 hidden-xs">
+      <ul class="nav nav-tabs nav-stacked" data-tabs="tabs">
+         <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
+         <li><a href="#profiles" data-toggle="tab">Roster</a></li>
+         <li class="disabled"><a href="#media" data-toggle="tab">Media</a></li>
+         <li><a href="#reviews" data-toggle="tab">Comments</a></li>
+      </ul>
+      </div>
+      
+       <div class="col-md-3 visible-xs">
+      <ul class="nav nav-tabs" data-tabs="tabs">
+         <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
+         <li><a href="#profiles" data-toggle="tab">Roster</a></li>
+         <li><a href="#media" data-toggle="tab">Media</a></li>
+         <li><a href="#reviews" data-toggle="tab">Comments</a></li>
+      </ul>
+      </div>
+      
+      <div class="col-md-9">
+      <div class="tab-content">
+            <div class="tab-pane fade in active" id="stats">
+               <img src="@routes.Assets.at("images/no-available-image.png")" height="40%" width="40%"> <br>
+               <h4>Stats: </h4>
+               
+               <ul style="list-style: none">
+                  <li><i><label class="control-label">Record: &nbsp &nbsp</label></i>@team.getRecord()</li>
+                     <li><label class="control-label">3 point %: &nbsp &nbsp</label>@team.getThreePt() %  <br></li>
+                     <li><label class="control-label">2 point %: &nbsp &nbsp</label>@team.getTwoPt() %  <br></li>
+                     <li><label class="control-label">Free Throw %: &nbsp &nbsp</label>@team.getOnePt() %  <br></li>
+                     <li><label class="control-label">Rebounds: &nbsp &nbsp</label>@team.getRebounds()   <br></li>
+                     <li><label class="control-label">Steals: &nbsp &nbsp</label>@team.getSteals()  <br></li>
+                     <li><label class="control-label">Blocks: &nbsp &nbsp</label>@team.getBlocks()  <br></li>
+                </ul>     
+                <a href="@routes.Teams.editStats(team.getId, slugify(team.getTeamName))" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
+    
+            </div>
+            <div class="tab-pane fade" id="profiles">
+               <h4>Player Profiles: </h4>
+                  <ul>
+                    @for(player <- team.getPlayerProfiles()) {
+                        <li><a href="@routes.Players.playerProfile(player.getId())">@player.getUser().getName()</a></li>
+                    }
+                    @for(player <- team.getNoProfile()) {
+                        <li>@player</li>                    
+                    }
+                  </ul>
+                 <a href="@routes.Teams.editStats(team.getId, slugify(team.getTeamName))" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>
+    
+            </div>
+            
+ <div id="player" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">"Player Name"</h4>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+      <div class="col-md-4">
+          <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+
+                <br>
+                    <img src="@routes.Assets.at("images/no-available-image.png")" height="60%" width="60%"> <br>
+        
+                 </div>
+                 <div class="col-md-8">
+                <h4>Awards & Stats: </h4>
+                11 ppg <br>
+                20% 3pts  <br>
+                70% 2pts  <br>
+                10% 1pt  <br>
+                5 rebounds  <br>
+                0 steals  <br>
+                4 blocks  <br>
+
+                <br>
+                </div>
+                </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a href="#" type="button" class="btn btn-success">See Full Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+            
+            <div class="tab-pane fade" id="media">
+               <h4>Pictures and Videos</h4>
+                There are no images or videos for this team.</br>
+                </br>
+                </br>
+                <a href="#">Add Pictures or Videos of this team</a>
+            </div>
+            <div class="tab-pane fade" id="reviews">
+               <h4>Comments about This Team: </h4>
+                  @for(comment <- comments) {
+                    <div class="well">
+                        <li><a href="@routes.Players.playerProfile(comment.getAuthor.getPlayer.getId)">@comment.getAuthor().getName()</a></li>
+                       <br/>
+                       <p>@comment.getComment()</p>
+                       <div class="pull-right">@comment.getDate()</div>
+                       <br/>
+                    </div>
+                 }
+                  
+                  </br>
+                  </br>
+                  <hr>
+                  
+              
+              @form(routes.Teams.postComment(team.getId(), slugify(team.getTeamName())), 'class -> "form-horizontal") {
+                
+                @bootstrap3.textarea(commentForm("comment"),
+                    rows = "6",
+                    label = "Leave a Comment",
+                    placeholder = "",
+                    help = "")
+              
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        <button id="submitButton" type="submit" class="btn btn-primary">
+                        Add Comment
+                        </button>
+                        </div>
+                    </div>    
+              
+              }
+              </div>
+         </div>
+      </div>
+    </div>
+    </div>
+    </div>
+}

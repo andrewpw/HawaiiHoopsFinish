@@ -1,0 +1,52 @@
+@(field: Field, label: String, optionMap: Map[String, Boolean], isMultiple: Boolean, help:String,
+  field2: Field, label2: String, optionMap2: Map[String, Boolean], isMultiple2: Boolean, help2: String,
+  field3: Field, label3: String, buttonNameList3: List[String], help3: String)
+
+  <div class="form-group @if(field.hasErrors) {has-error}">
+    <label class="col-sm-2 control-label" for="@field.id">@label</label>
+    <div class="col-sm-2">
+      <select
+        class="form-control"
+        id="@field.id"
+        name="@if(isMultiple) {@(field.name + "[]")} else {@field.name}"
+        @if(isMultiple) {multiple="multiple"}>
+        @if(!isMultiple) {<option class="blank" value="">Hour</option>}
+        @for((optionName, isSelected) <- optionMap) {
+          <option id="@optionName" value="@optionName" @if(isSelected) {selected}>@optionName</option>
+        }
+      </select>
+      <span class="help-block">@help</span>
+      <span class="help-block">@{field2.error.map { error => error.message }}</span>
+    </div>
+    
+    <div class="col-sm-2">
+      <select
+        class="form-control"
+        id="@field2.id"
+        name="@if(isMultiple2) {@(field2.name + "[]")} else {@field2.name}"
+        @if(isMultiple2) {multiple="multiple"}>
+        @if(!isMultiple2) {<option class="blank" value="">Minute</option>}
+        @for((optionName, isSelected) <- optionMap2) {
+          <option id="@optionName" value="@optionName" @if(isSelected) {selected}>@optionName</option>
+        }
+      </select>
+      <span class="help-block">@help2</span>
+      <span class="help-block">@{field2.error.map { error => error.message }}</span>
+    </div>
+    <div id="@(field3.id + "s")" class="col-sm-2" >
+      @for(buttonName <- buttonNameList3) {
+      <label class="radio-inline">
+        <input
+          type="radio"
+          name="@field3.name"
+          id="@buttonName"
+          value="@buttonName"
+          @if(buttonName == field3.value.getOrElse("")) {checked} />
+        @buttonName
+      </label>
+      }
+      <span class="help-block">@help3</span>
+      <span class="help-block">@{field3.error.map { error => error.message }}</span>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>

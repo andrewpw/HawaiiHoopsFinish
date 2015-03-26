@@ -1,0 +1,211 @@
+@(title: String, courts: List[Court], isLoggedIn: Boolean)
+@import utils.Tags._
+
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/courts.css")" />
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+
+    <script type="text/javascript">
+        jQuery.noConflict();
+
+        jQuery(function() {
+             jQuery( "#search-button" ).submit( function ( e ) {
+                e.preventDefault();
+
+                // get value from text input box
+                var nameval = jQuery('#search').val();
+
+                 // make ajax request for json info about matching courts
+                jsRoutes.controllers.Courts.searchCourts().ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        name: nameval
+                    }),
+                    success: function(data) {
+                       jQuery('#search').val('');
+                       var result = "";
+                        courtsInfo = [];
+                        for(var i = 0; i < data.courts.length; i++) {
+                            result += '<div class="court-row"><a href="';
+                            result += '/courts/' + data.courts[i].id + '/' + data.courts[i].slug;
+                            result += '">' + data.courts[i].name + '</a></div>';
+
+                            var court = [data.courts[ i ].name, data.courts[i ].lat, data.courts[i ].lng, data.courts[i ].description, data.courts[i ].id,'/courts/' + data.courts[i].id + '/' + data.courts[i].slug];
+                            courtsInfo.push(court);
+
+                        }
+
+                       jQuery('#courtList' ).html(result);
+
+
+                       deleteMarkers();
+                       setMarkers(map, courtsInfo);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        //currently set to Univeristy of Hawaii at Manoa as deafult
+        var uh = new google.maps.LatLng(21.2970, -157.8170);
+        var hawaii = new google.maps.LatLng(21.4814, -157.9464);
+        var map;
+        var markers = [];
+
+
+        function initialize() {
+
+            var mapOptions = {
+                //center: new google.maps.LatLng(21.2970, -157.8170),
+                center: hawaii,
+                zoom: 10
+            };
+
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+            setMarkers(map, courtsInfo);
+/*
+            // Try HTML5 geolocation
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = new google.maps.LatLng(position.coords.latitude,
+                    position.coords.longitude);
+
+                   // var infowindow = new google.maps.InfoWindow({
+                   //     map: map,
+                   //     position: pos,
+                   //     content: 'Location found using HTML5.'
+                   // });
+
+                    map.setCenter(pos);
+                    map.setZoom(13)
+                }, function() {
+                    handleNoGeolocation(true);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleNoGeolocation(false);
+            }
+*/
+
+        }
+
+        var courtsInfo = [
+            @for(court <- courts) {
+                ['@court.getName', @court.getAddress.getLat, @court.getAddress.getLng, '@court.getDescription', @court.getId, '@routes.Courts.getCourt(court.getId, slugify(court.getName))' ],
+            }
+        ]
+
+        var infowindow =  new google.maps.InfoWindow();
+
+        function setMarkers(map, locations) {
+            for (var i = 0; i < locations.length; i++) {
+                var court = courtsInfo[i];
+                var myLatLng = new google.maps.LatLng (court[1], court[2]);
+                var marker = new google.maps.Marker ({
+                    position : myLatLng,
+                    map : map,
+                    animation: google.maps.Animation.DROP,
+                    title : court[0]
+                });
+                var description = "<b>" + court[0] + "</b></br><a href='" + court[5] + "'>more info</a>";
+
+                bindInfoWindow(marker, map, infowindow, description);
+                markers.push(marker); // put into array
+            }
+        }
+        
+        function slugifyName(name) {
+        	return name.toLowerCase()
+        	   .replace(/ /g, '-')
+        	   .replace(/[^\w-]+/g, '');
+        }
+
+        function bindInfoWindow(marker, map, infowindow, strDescription) {
+            google.maps.event.addListener(marker, 'click', function() {
+                //infowindow.close();
+                infowindow.setContent(strDescription);
+                infowindow.open(map, marker);
+            });
+        }
+
+        function handleNoGeolocation(errorFlag) {
+            /*if (errorFlag) {
+                var content = 'Error: The Geolocation service failed.';
+            } else {
+                var content = 'Error: Your browser doesn\'t support geolocation.';
+            }
+
+            var options = {
+                map: map,
+                position: uh,
+                content: content
+            };
+
+            var infowindow = new google.maps.InfoWindow(options);*/
+            map.setCenter(hawaii);
+            map.setZoom(12);
+        }
+
+        // Deletes all markers in the array by removing references to them.
+        function deleteMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+
+            markers = [];
+        }
+
+
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+
+    <script type="text/javascript" src="@routes.Courts.javascriptRoutes()"></script>
+}
+
+@Main(title, isLoggedIn: Boolean, scripts) {
+    <div class="container">
+
+
+           <!-- <div class="row">
+                <div class="col-md-12">
+                    <h1>Basketball Courts in Hawaii</h1>
+                </div>
+            </div> -->
+
+
+            <div class="row">
+                <!-- Map -->
+                <div class="col-md-9">
+                    <div id="map-canvas"></div>
+                </div>
+
+                <div class="col-md-3">
+                    <form id="search-button">
+                    <div class="input-group">
+                        <input id="search" type="text" placeholder="Enter part of a court name" class="form-control"/>
+                        <span class="input-group-btn">
+                            <button  class="btn btn-default" type="submit">Search</button>
+                        </span>
+                        </div>
+                    </form>
+
+                        <div id="courtList">
+                        @for(court <- courts) {
+                            <div class="court-row">
+                                <a href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">@court.getName</a>
+                            </div>
+                        }
+                        </div>
+                </div>
+            </div>
+
+    </div>
+
+}

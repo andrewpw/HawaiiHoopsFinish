@@ -1,0 +1,42 @@
+@(title: String, leagueForm: Form[views.formdata.leagues.LeagueForm], loggedIn: Boolean)
+
+@import helper._
+@import bootstrap3._
+
+
+@Main(title, loggedIn) {
+<div class="container">
+<h2>Edit the Schedule</h2>
+<hr>
+</br>
+
+
+    @form(routes.Leagues.addLeague(), 'class -> "form-horizontal") {
+ 
+        @bootstrap3.datepicker(leagueForm("startDate"),
+            label = "Start Date",
+            id = "datepicker",
+            placeholder = "Click for Calendar",
+            help = "")
+            
+        @bootstrap3.datepicker(leagueForm("endDate"),
+            label = "End Date",
+            id = "datepicker2",
+            placeholder = "Click for Calendar",
+            help = "")
+            
+            
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                Set Schedule
+                </button>
+            </div>
+        </div>    
+    }
+    
+
+
+
+</div>
+}

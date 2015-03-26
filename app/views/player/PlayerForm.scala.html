@@ -1,0 +1,74 @@
+@(title: String, playerForm : Form[views.formdata.PlayerFormData], 
+  playerSkillMap : Map[String, Boolean], playerPositionMap: Map[String, Boolean], isLoggedIn: Boolean)
+
+@import helper._ 
+@import bootstrap3._
+@import models._
+
+@Main(title, isLoggedIn) {
+<div class="container">
+  @form(routes.Players.playerManageSubmit(), 'class -> "form-horizontal"){
+    
+    @text(playerForm("name"),
+        label = "Name",
+        placeholder = "Brick Tamland",
+        help = "Your name.")
+        
+    @text(playerForm("nickname"),
+        label = "Nickname",
+        placeholder = "Brick",
+        help = "Your nickname.")
+        
+    @text(playerForm("picUrl"),
+        label = "PicUrl",
+        placeholder = "http://www.example.com/picture",
+        help = "Url of your profile pic.")
+  
+    @text(playerForm("homeCourt"),
+        label = "Home Court",
+        placeholder = "Kapolei Park",
+        help = "Your home court")
+        
+    @bootstrap3.select(playerForm("skill"),
+        label = "Skill",
+        optionMap = playerSkillMap,
+        isMultiple = false,
+        help = "Your skill level.")
+        
+    @bootstrap3.select(playerForm("position"),
+        label = "Position",
+        optionMap = playerPositionMap,
+        isMultiple = false,
+        help = "The positions you play.")
+        
+    @text(playerForm("height"),
+        label = "Height",
+        placeholder = "5'9\"",
+        help = "Your height.")
+        
+    @text(playerForm("weight"),
+        label = "Weight",
+        placeholder = "210 lbs",
+        help = "Your weight.")
+        
+    @bootstrap3.textarea(playerForm("bio"),
+        rows = "10",
+        label = "Bio",
+        placeholder = "I have been playing basketball since...",
+        help = "Tell us a little about yourself. Please!")
+        
+    @text(playerForm("lookingFor"),
+        label = "Looking For",
+        placeholder = "Pickup Games",
+        help = "What are you looking for?")
+        
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button id="submitButton" type="submit" class="btn btn-info">
+            Submit
+        </button>
+      </div>
+    </div>
+  }
+</div>
+}

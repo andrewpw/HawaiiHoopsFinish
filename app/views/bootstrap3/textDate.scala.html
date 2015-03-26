@@ -1,0 +1,46 @@
+@(field: Field, label:String, placeholder: String, help:String, field2: Field, placeholder2: String, help2:String, field3: Field, placeholder3: String, help3:String)
+
+<div class="row">
+ <label class="col-sm-2 control-label">@label</label>
+ <div class="form-inline @if(field.hasErrors) {has-error}">
+  <div class="col-sm-2"> 
+ 
+   <input type="text" 
+             class="form-control" 
+             id="@field.id" 
+             name="@field.name" 
+             value="@field.value.getOrElse("")"
+             placeholder="@placeholder"/>
+      <span class="help-block">@help</span>
+      <span class="help-block">@{field.error.map { error => error.message }}</span>
+    </div>
+ </div>
+ <div class="form-inline @if(field2.hasErrors) {has-error}">
+  <div class="col-sm-2">
+  
+    <input type="text" 
+             class="form-control" 
+             id="@field2.id" 
+             name="@field2.name" 
+             value="@field2.value.getOrElse("")"
+             placeholder="@placeholder2"/>
+      <span class="help-block">@help2</span>
+      <span class="help-block">@{field2.error.map { error => error.message }}</span>
+    </div>
+    </div>
+    <div class="form-inline @if(field3.hasErrors) {has-error}">
+  
+   <div class="col-sm-2">
+  
+      <input type="text" 
+             class="form-control" 
+             id="@field3.id" 
+             name="@field3.name" 
+             value="@field3.value.getOrElse("")"
+             placeholder="@placeholder3"/>
+      <span class="help-block">@help3</span>
+      <span class="help-block">@{field3.error.map { error => error.message }}</span>
+    </div>
+   </div> 
+  </div>
+  

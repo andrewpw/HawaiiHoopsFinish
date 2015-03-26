@@ -1,0 +1,9 @@
+@(field: Field, label:String, placeholder:String, help:String)
+
+      <input type="text" 
+             class="form-control" 
+             id="@field.id" 
+             name="@field.name" 
+             value="@field.value.getOrElse("")"
+             placeholder="@placeholder" />
+

@@ -1,0 +1,128 @@
+
+@(title: String, court: Court, nearby: List[Court], reviewCount: Integer, playerCount: Integer,
+        monday: List[Hours], tuesday: List[Hours], wednesday: List[Hours], thursday: List[Hours],
+        friday: List[Hours],sunday: List[Hours], saturday: List[Hours], isLoggedIn: Boolean)
+
+@import courts.CourtMain
+@import utils.Tags._
+
+
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")"/>
+}
+
+@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
+
+                <img src="http://maps.googleapis.com/maps/api/staticmap?center=@court.getAddress.getLat,@court.getAddress.getLng&markers=size:mid%7Ccolor:red%7C@court.getAddress.getLat,@court.getAddress.getLng&zoom=12&size=400x100&scale=2&sensor=false" width="100%"/>
+                <!--<a href="#">view map</a>-->
+
+                <h3>Court Information</h3>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <strong>Lighted: </strong>
+                             @court.isLighted
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Public/Private:</strong>
+                             @court.getType
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Indoor/Outdoor: </strong>
+                             @court.getIndoor
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Number of Courts: </strong>
+                            @court.getNum_courts
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div>
+                            <strong>Quality: </strong>
+                            @court.getCourt_quality
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Size: </strong>
+                            @court.getCourt_size
+                        </div>
+
+                        <div class="courtInfo">
+                            <strong>Surface: </strong>
+                            @court.getCourt_surface
+                        </div>
+
+                    </div>
+                </div>
+
+                @if(court.getIndoor) {
+                    <h3>Open Hours</h3>
+                    @for((hours, index) <- monday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                    @for((hours, index) <- tuesday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @hours.getStart_time.dayOfWeek.getAsText: @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                    @for((hours, index) <- wednesday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @hours.getStart_time.dayOfWeek.getAsText: @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                    @for((hours, index) <- thursday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @hours.getStart_time.dayOfWeek.getAsText: @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                    @for((hours, index) <- friday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @hours.getStart_time.dayOfWeek.getAsText: @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                    @for((hours, index) <- saturday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @hours.getStart_time.dayOfWeek.getAsText: @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                    @for((hours, index) <- sunday.zipWithIndex) {
+                        @if(index == 0) {
+                            @hours.getStart_time.dayOfWeek.getAsText:
+                        } else {
+                            ,
+                        }
+                        @hours.getStart_time.dayOfWeek.getAsText: @formatTimes(hours.getStart_time, hours.getEnd_time)
+                    }
+                }
+
+                <h3>Description</h3>
+                <p>@court.getDescription</p>
+
+}

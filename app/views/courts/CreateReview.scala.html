@@ -1,0 +1,73 @@
+@(title: String,  court: Court, reviews: List[Review], reviewForm: Form[forms.CourtReviewForm], isLoggedIn: Boolean)
+
+@import helper._
+@import utils.Tags._
+
+@Main(title, isLoggedIn) {
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <h1 style="margin-bottom:0px">@court.getName</h1>
+            <hr/>
+            @form(routes.Courts.postReview(court.getId, slugify(court.getName)), 'class -> "form-horizontal") {
+
+                @bootstrap3.textarea(reviewForm("review"),
+                    rows = "12",
+                    label = "Review",
+                    placeholder = "Your review for the court",
+                    help = "")
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+
+                        <button id="submitButton" type="submit" class="btn btn-primary pull-right">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-4">
+        @if(reviews.isEmpty) {
+            <p>No Reviews</p>
+        }else {
+            <h3>Recent Reviews</h3>
+            <hr/>
+            @for(review <- reviews) {
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="media">
+                            <a class="pull-left" href="">
+                                <img class="media-object img-thumbnail" src="@review.getAuthor.getPlayer().getPicUrl" alt="Image not Available" width="64px">
+                            </a>
+
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                @review.getAuthor.getName
+                                </h4>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-md-12">
+                        @review.getTimestamp.getMonthOfYear/@review.getTimestamp.getDayOfWeek/@review.getTimestamp.getYear
+                    </div>
+
+                    <div class="col-md-12">
+                    @review.getReview
+                    </div>
+                </div>
+                <hr/>
+            }
+        }
+
+        </div>
+    </div>
+</div>
+}

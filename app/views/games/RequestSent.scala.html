@@ -1,0 +1,44 @@
+@(title: String, isLoggedIn: Boolean, gameName: String, id: Long) 
+
+@Main(title, isLoggedIn) {
+
+<style type="text/css">
+        .content {
+            margin: auto;
+            max-width: 100%;
+            text-align: center;
+            width: 500px;
+        }
+        #count-down {
+            font-size: 4em;
+        }
+    </style>
+
+<div class="container">
+<div class="content">
+            <h3>Request Sent...</h3>
+            <p>
+                Your request to join this game has been sent to the creator.
+            </p>
+            <p>
+                <i class="glyphicon glyphicon-chevron-right"></i> You will be redirected back to the game page you were originally viewing.<br/>
+            </p>
+            <p class="count-down-wrap">
+                <span id="count-down">5</span><br/>
+                Click <a href="@routes.Games.getGame(id, gameName)">here</a> if you don't want to wait.
+            </p>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript">
+        var interval = setInterval(function() {
+            var count = Number($('#count-down').text());
+            count--;
+            $('#count-down').text(count);
+            if(count == 0) {
+                clearInterval(interval);
+                window.location = '@routes.Games.getGame(id, gameName)';
+            }
+        }, 1000);
+    </script>
+  }

@@ -1,0 +1,232 @@
+@(title: String, registrationForm: Form[forms.RegistrationForm], courts: List[Court], isLoggedIn: Boolean)
+
+@import bootstrap3._
+@import utils.Tags._
+
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/index.css")" />
+}
+
+@Main(title, isLoggedIn, scripts) {
+
+    @if(isLoggedIn) {
+
+        <div class="container logged-in">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="well">
+                        <a type="button" class="btn btn-default btn-sm" href="@routes.Games.createGame()">Create Game</a>
+                        <h4>Upcoming Games</h4>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            </thead>
+                            <tbody data-link="row" class="rowlink">
+                            @for(game <- models.games.Game.gamesForIndex().getList) {
+                                <tr>
+                                    <td><a id="noColor" href="@routes.Games.getGame(game.getId, slugify(game.getName))">@game.getName</a></td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 hidden-xs">
+                    <div class="well">
+                          <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+				            <!-- Indicators -->
+				            <ol class="carousel-indicators">
+				              <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+				              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				              <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+				            </ol>
+				        
+				            <!-- Wrapper for slides -->
+				            <div class="carousel-inner">
+				              <div class="item active">
+				                    <div class ="index-car" style = "background-image: url('@routes.Assets.at("images/HawaiiHoopsNetworkLogo.jpg")');"></div>
+				                    <div class="carousel-caption"></div>
+				                  </div>
+				                  <div class="item">
+				                    <div class ="index-car" style = "background-image: url('http://img.groundspeak.com/waymarking/display/3fec022a-8674-4339-a8e5-ced0e26aec21.JPG');"></div>
+				                    <div class="carousel-caption">For Hawaii Hoopers</div>
+				                  </div>
+				                  <div class="item">
+				                    <div class ="index-car" style = "background-image: url('http://taylorak.files.wordpress.com/2013/11/succeed.jpg?w=576&h=384');"></div>
+				                    <div class="carousel-caption">Meet our team</div>
+				                  </div>
+				            </div>
+				        
+				            <!-- Controls -->
+				            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+				              <span class="glyphicon glyphicon-chevron-left"></span>
+				            </a>
+				            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+				              <span class="glyphicon glyphicon-chevron-right"></span>
+				            </a>
+				          </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="well">
+                        <h4>Your Courts</h4>
+                        @if(courts.isEmpty) {
+                            <p>You aren't following any courts</p>
+                            <p>Find courts <a href="@routes.Courts.index()">here</a></p>
+                        } else {
+                            @for(court <- courts) {
+                                <ul class="list">
+                                    <li><a href="@routes.Courts.getCourt(court.getId, slugify(court.getName))">@court.getName</a></li>
+                                </ul>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    } else {
+
+        <!-- First Row -->
+        <div class="row odd">
+
+            @if(flash.containsKey("registered")) {
+                <div class="alert alert-success" style="text-align:center;">
+                    @flash.get("registered")
+                </div>
+            }
+
+            @if(flash.containsKey("login")) {
+                <div class="alert alert-success" style="text-align:center;">
+                    @flash.get("login")
+                </div>
+            }
+
+
+            <div class="container">
+                    <!-- Header -->
+                <div class="col-sm-7" id="large">
+                    <h1>Connecting basketball players, teams, and leagues on Oahu.</h1>
+                    <div>
+                        <div><span class="glyphicon glyphicon-lg glyphicon-pencil"></span> <strong>Register for leagues.</strong></div>
+                        <div><span class="glyphicon glyphicon-lg glyphicon-globe"></span> <strong>View open gym hours.</strong></div>
+                        <div><span class="glyphicon glyphicon-lg glyphicon-play"></span> <strong>Start pickup games.</strong></div>
+                        <div><span class="glyphicon glyphicon-lg glyphicon-user"></span> <strong>Socialize with other players and teams.</strong></div>
+                    </div>
+                </div>
+
+                    <!-- Registration Form -->
+                <div class="col-sm-4 col-sm-offset-1">
+                @registrationform(routes.Users.postRegister(), registrationForm("first"), registrationForm("last"), registrationForm("email"),registrationForm("password"), registrationForm("confirmPassword"))
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row -->
+        <div class="row even">
+            <div class="container">
+                <div class="col-sm-12">
+                    <h2>For players of all levels.</h2>
+                    <p class="lead">
+                        The HIHoops site is designed to make it easy for players to connect
+                        with players of a similar skill level, location, and even gender.
+                    </p>
+                    <img class="img-responsive" src="@routes.Assets.at("images/players.png")"/>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Third Row -->
+        <div class="row odd">
+            <div class="container">
+                <div class="col-sm-12 wood-background">
+                    <h1>Find gyms & courts</h1>
+                    <p class="lead">
+                        Looking for a court to play at? Our gyms page can locate gyms & courts near you!
+                    </p>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/GymsMap.png")"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fourth Row -->
+        <div class="row even">
+            <div class="container">
+                <div class="col-sm-12">
+                    <h1>Build your rep.</h1>
+                    <p class="lead">
+                        Find other b-ballers to play with and check their sportsmanship rating!
+                    </p>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/PlayerProfiles.png")"/>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Fifth Row -->
+        <div class="row odd">
+            <div class="container">
+                <div class="col-sm-12">
+                    <h1>Find teams to play in.</h1>
+                    <p class="lead">
+                        Search for teams to join based on skill level and position!
+                    </p>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/Teams.png")"/>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Sixth Row -->
+        <div class="row even">
+            <div class="container">
+                <div class="col-sm-12">
+                    <h1>Find, create, and manage leagues</h1>
+                    <p class="lead">
+                        Advertise, create, and manage your league! Or search for leagues that your team can play in!
+                    </p>
+                    <img class="centered img-responsive" src="@routes.Assets.at("images/Leagues.png")"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seventh Row -->
+        <div class="row odd">
+            <div class="container">
+                    <!-- UH logo -->
+                <div class="col-md-4">
+                    <img src="@routes.Assets.at("images/Glidecontent_UH12.png")" width="245" height="224" alt="245x230" vspace="22px">
+                </div>
+
+                <div class="col-sm-8">
+                    <h1>Created by students at the University of Hawaii for local players.</h1>
+                    <p class="lead">
+                        Hawaii Hoops Network isn't one of those mainland websites that tries to cater to
+                        basketball players on the islands. Hawaii Hoops Network was created by a group of local students who have a passion
+                        for amateur basketball.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <!-- Register Button -->
+        <div align="center"><a data-toggle="modal" href="#registration" class="btn btn-primary btn-lg">Ready to register?</a></div>
+        
+        <div id="registration" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-body">
+                    @registrationform(routes.Users.postRegister(), registrationForm("first"), registrationForm("last"), registrationForm("email"),registrationForm("password"), registrationForm("confirmPassword"))
+                    <a href="" data-dismiss="modal">Cancel</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    }
+}

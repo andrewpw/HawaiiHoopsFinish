@@ -1,0 +1,78 @@
+@(title: String, court: Court, nearby: List[Court], reviews: com.avaje.ebean.Page[Review], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean)
+
+@import courts.CourtMain
+
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")" />
+
+        <script type="text/javascript">
+        jQuery.noConflict();
+
+        jQuery(function() {
+             jQuery( ".load" ).click( function ( e ) {
+                e.preventDefault();
+
+                 var pathArray = window.location.pathname.split( '/' );
+                 var page = jQuery(this ).attr("id");
+
+
+                //make ajax request for json info about matching courts
+                jsRoutes.controllers.Courts.getReviewsPage(pathArray[2], pathArray[3], page).ajax({
+                    type: 'GET',
+                    //contentType: 'application/json',
+                    dataType: 'json',
+                    success: function(data) {
+
+                        var result = "";
+                        for(var i = 0; i < data.courts.length; i++) {
+                            result += '<div class="row"><div class="col-md-12"><strong><a href="';
+                            result += '/playerProfile?id=' + data.courts[i].id;
+                            result += '">' + data.courts[i].author + '</a></strong>';
+                            result += '<small>' + data.courts[i ].date + '</small>';
+                            result += '<p>' + data.courts[i ].review + '</p></div></div><hr/>';
+                        }
+
+                        jQuery('#reviews').append(result);
+                        if(!data.morPages) {
+                            jQuery(".load" ).remove();
+                        } else {
+                            jQuery ( ".load" ).attr ( 'id', data.pageNumber ) ;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
+
+    <h3>Reviews</h3>
+    @if(reviews.getList.isEmpty) {
+        <p>No reviews</p>
+    }else {
+        <hr/>
+        <div id="reviews">
+        @for(review <- reviews.getList) {
+            <div class="row">
+
+                <div class="col-md-12">
+                    <strong><a href="@routes.Players.playerProfile(review.getAuthor.getPlayer.getId)">@review.getAuthor.getName</a></strong>
+                    <small>@review.getTimestamp.getMonthOfYear
+                        /@review.getTimestamp.getDayOfMonth/@review.getTimestamp.getYear</small>
+                    <p>
+                    @review.getReview
+                    </p>
+                </div>
+            </div>
+            <hr/>
+        }
+            </div>
+
+        @if(reviews.hasNext) {
+            <button id="1" class="load btn btn-primary col-md-12" type="submit">
+                Load More
+            </button>
+        }
+    }
+}

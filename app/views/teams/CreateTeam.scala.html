@@ -1,0 +1,62 @@
+@(title: String, teamForm: Form[views.formdata.teams.TeamForm], loggedIn: Boolean)
+
+@import helper._
+@import bootstrap3._
+
+
+@Main(title, loggedIn) {
+<div class="container">
+<h2>Create a Team</h2>
+<hr>
+</br>
+    @form(routes.Teams.addTeam(), 'class -> "form-horizontal") {
+    
+    
+        @bootstrap3.text(teamForm("teamName"),
+            label = "Team Name",
+            placeholder = "The name of the team",
+            help = "")
+            
+       @bootstrap3.text(teamForm("location"),
+            label = "Location",
+            placeholder = "The location of the team",
+            help = "")
+       
+       @bootstrap3.radiobuttons(teamForm("teamType"), 
+              label = "Type",
+              buttonNameList = models.teams.Team.typeOfTeam(),
+              help = "")
+              
+        @bootstrap3.text(teamForm("skillLevel"),
+            label = "Skill Level (optional)",
+            placeholder = "The skill level of the team",
+            help = "")
+       
+       @bootstrap3.textarea(teamForm("roster"),
+              rows = "6",
+              label = "Roster",
+              placeholder = "Who is on your team?",
+              help = "Please separate players with a comma.")
+            
+       @bootstrap3.textarea(teamForm("description"),
+              rows = "6",
+              label = "Description (optional)",
+              placeholder = "About this team.",
+              help = "")
+            
+    
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                Create
+                </button>
+            </div>
+        </div>    
+    }
+    
+
+
+
+</div>
+}

@@ -1,0 +1,78 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                                    controllers.Application.index()
+#GET         /home                       controllers.Application.home()
+
+GET         /login                               controllers.Users.login()
+POST        /login                               controllers.Users.postLogin()
+#GET         /register                            controllers.Users.register()
+POST        /register                            controllers.Users.postRegister()
+GET         /logout                              controllers.Users.logout()
+GET         /delete                              controllers.Users.deleteUser()
+GET         /validate/:key                       controllers.Users.validate(key)
+
+GET         /leagues/LeagueSchedule     controllers.Leagues.editSchedule()
+POST        /leagues/addLeague          controllers.Leagues.addLeague()
+POST        /leagues/edit               controllers.Leagues.editLeague(id: Long)
+POST        /leagues/addTeam            controllers.Leagues.addTeam(id: Long)
+GET         /leagues/view/:id           controllers.Leagues.leagues(id: Long)
+GET         /leagues/all                controllers.Leagues.allLeagues(sort: String, page: Integer)
+POST        /leagues/all/search         controllers.Leagues.searchLeagues(page: Integer)
+
+# Courts
+GET         /courts                              controllers.Courts.index()
+POST        /courts/search/                      controllers.Courts.searchCourts()
+GET         /courts/:id/:slug                    controllers.Courts.getCourt(id: Long, slug: String)
+GET         /courts/:id/:slug/players            controllers.Courts.getPlayers(id: Long, slug: String)
+GET         /courts/:id/:slug/players/           controllers.Courts.getPlayersPage(id: Long, slug: String, page: Integer)
+GET         /courts/:id/:slug/reviews            controllers.Courts.getReviews(id:Long, slug: String)
+GET         /courts/:id/:slug/reviews/           controllers.Courts.getReviewsPage(id: Long, slug: String, page: Integer)
+GET         /courts/:id/:slug/review             controllers.Courts.review(id:Long, slug: String)
+POST        /courts/:id/:slug/review             controllers.Courts.postReview(id:Long, slug: String)
+POST        /courts/favorite                     controllers.Courts.postFavorite()
+POST        /courts/unfavorite                   controllers.Courts.postUnfavorite()
+
+GET         /players                             controllers.Players.players(sortOrder: String, page: Integer)
+GET         /playerSearch                        controllers.Players.playerSearch(field: String, searchWord: String, sortOrder: String, page: Integer)
+GET         /playerNameSearch                    controllers.Players.playerNameSearch()
+GET         /playerProfile                       controllers.Players.playerProfile(id: Long)
+GET         /playerProfile/:id:rating            controllers.Players.playerVote(id: Long, rating: Long)
+GET         /player/manage                       controllers.Players.playerManage()
+GET         /player/manage/submit                controllers.Players.playerManageSubmit()
+GET         /player/edit                         controllers.Players.playerEdit(id: Long)
+
+GET         /TermsOfUse                          controllers.Application.terms()
+GET         /ContactUs                           controllers.Application.contact()
+POST        /Send                                controllers.Application.sendMessage()
+GET         /AboutUs                             controllers.Application.about()
+
+# Games
+GET         /games/list                          controllers.Games.allGames(page: Integer, sort: String)
+GET         /games/view/:id/:name                    controllers.Games.getGame(id: Long, name)
+GET         /games/create                        controllers.Games.createGame()
+GET         /games/edit/:id/:name                    controllers.Games.editGame(id: Long, name)
+POST        /games/new                           controllers.Games.addGame()
+POST        /games/list/search                   controllers.Games.searchResults(page: Integer)
+GET         /games/view/:id/:name/join               controllers.Games.joinPublic(id: Long, name)
+GET         /games/view/:id/:name/joinPrivate        controllers.Games.joinPrivate(id: Long, name)
+GET         /games/view/:id/:name/allow              controllers.Games.allowPrivate(id: Long, name, user: String)
+GET         /games/view/:id/:name/unjoin             controllers.Games.unjoin(id: Long, name)
+
+
+# Teams
+GET         /teams/all                           controllers.Teams.allTeams(sort: String, page: Integer)
+POST        /teams/all/search                    controllers.Teams.searchTeams(page: Integer)
+GET         /teams/create                        controllers.Teams.createTeam()
+POST        /teams/post                          controllers.Teams.addTeam()
+GET         /teams/view/:id/:teamName                      controllers.Teams.showTeam(id: Long, teamName: String)
+POST        /teams/view/:id/:teamName/comment              controllers.Teams.postComment(id: Long, teamName: String)
+GET         /teams/view/:id/:teamName/edit                 controllers.Teams.editStats(id: Long, teamName: String)
+POST        /teams/view/:id/:teamName/stats/post           controllers.Teams.postStats(id: Long, teamName: String)
+
+# Map static resources from the /public folder to the /assets URL path
+
+GET         /assets/js/routes                    controllers.Courts.javascriptRoutes()
+GET         /assets/*file                        controllers.Assets.at(path="/public", file)

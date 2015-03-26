@@ -1,0 +1,167 @@
+@(title: String, team: models.teams.Team, statForm: Form[views.formdata.teams.StatForm], loggedIn: Boolean)
+
+@import helper._
+@import bootstrap3._
+@import utils.Tags._
+
+@Main(title, loggedIn) {
+    <div class="container">
+    <div class="well">
+   <h4>@team.getTeamName()</h4>
+      <div class="row">
+      <div class="col-md-3 hidden-xs">
+      <ul class="nav nav-tabs nav-stacked" data-tabs="tabs">
+         <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
+         <li class="disabled"><a>Roster</a></li>
+         <li class="disabled"><a>Media</a></li>
+         <li class="disabled"><a>Comments</a></li>
+      </ul>
+      </div>
+      
+       <div class="col-md-3 visible-xs">
+      <ul class="nav nav-tabs" data-tabs="tabs">
+         <li class="active"><a href="#stats" data-toggle="tab">Stats</a></li>
+         <li class="disabled"><a>Roster</a></li>
+         <li class="disabled"><a>Media</a></li>
+         <li class="disabled"><a>Comments</a></li>
+      </ul>
+      </div>
+      
+      <div class="col-md-9">
+      <div class="tab-content">
+            <div class="tab-pane fade in active" id="stats">
+               <img src="@routes.Assets.at("images/no-available-image.png")" height="40%" width="40%"> <br>
+               <h4>Edit Stats: </h4>
+                  @form(routes.Teams.postStats(team.getId, slugify(team.getTeamName)), 'class -> "form-horizontal") {
+                  
+                    @bootstrap3.text(statForm("record"),
+                        label = "Record",
+                        placeholder = "0-0",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("threePt"),
+                        label = "Three Points %",
+                        placeholder = "65",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("twoPt"),
+                        label = "Two Point %",
+                        placeholder = "80",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("onePt"),
+                        label = "Free Throw %",
+                        placeholder = "95",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("rebounds"),
+                        label = "# of Rebounds",
+                        placeholder = "90",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("steals"),
+                        label = "# of Steals",
+                        placeholder = "65",
+                        help = "")
+                        
+                    @bootstrap3.text(statForm("blocks"),
+                        label = "# of Blocks",
+                        placeholder = "80",
+                        help = "")
+                        
+                    @bootstrap3.textarea(statForm("roster"),
+                        rows = "6",
+                        label = "Add/Remove players",
+                        placeholder = "",
+                        help = "Please separate player names with a comma.")
+                        
+                     <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        
+                        <button id="submitButton" type="submit" class="btn btn-primary">
+                        Done Editing
+                        </button>
+                        </div>
+                    </div>    
+              
+                  
+                  }
+                    <a href="@routes.Teams.showTeam(team.getId, slugify(team.getTeamName))">Cancel</a>
+                  
+            </div>
+            <div class="tab-pane fade" id="profiles">
+               <h4>Player Profiles: </h4>
+                  <ul>
+                    @for(player <- team.getRosterList()) {
+                        <li><a href="#player">@player</a></li>
+                    }
+                  </ul>
+            </div>
+            
+ <div id="player" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">"Player Name"</h4>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+      <div class="col-md-4">
+          <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+
+                <br>
+                    <img src="@routes.Assets.at("images/no-available-image.png")" height="60%" width="60%"> <br>
+        
+                 </div>
+                 <div class="col-md-8">
+                <h4>Awards & Stats: </h4>
+                11 ppg <br>
+                20% 3pts  <br>
+                70% 2pts  <br>
+                10% 1pt  <br>
+                5 rebounds  <br>
+                0 steals  <br>
+                4 blocks  <br>
+
+                <br>
+                </div>
+                </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a href="#" type="button" class="btn btn-success">See Full Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+            
+            <div class="tab-pane fade" id="media">
+               <h4>Pictures and Videos</h4>
+                There are no images or videos for this team.</br>
+                </br>
+                </br>
+                <a href="#">Add Pictures or Videos of this team</a>
+            </div>
+            <div class="tab-pane fade" id="reviews">
+               <h4>Comments about This Team: </h4>
+                  
+                  
+                  </br>
+                  </br>
+                  <hr>
+                  
+              
+             
+              </div>
+         </div>
+      </div>
+    </div>
+    </div>
+    </div>
+}

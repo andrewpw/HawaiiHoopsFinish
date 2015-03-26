@@ -1,0 +1,57 @@
+@*************************
+ Simple Registration template.
+ 
+ Takes a reverse route, the name field, the email field, and the password field from a form. 
+ If form validation fails, then the fields will have Twitter Bootstrap error highlighting.
+ Clients should set the "error" key in flash scope to provide feedback on errors. 
+**************************@
+
+@(reverseRoute: play.api.mvc.Call, firstField: Field, lastField: Field, emailField: Field, passwordField: Field, confirmField: Field)
+
+<!--<div class="row">
+  <div class="col-sm-4 col-sm-offset-4">
+-->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Register</h3>
+  </div>
+  <div class="panel-body">
+    @helper.form(reverseRoute, 'role -> "form") {
+      <fieldset>
+        <div class="row">
+      
+        <div class="form-group @if(firstField.hasErrors) {has-error}" >
+        <div class="col-sm-6">
+          <input id="@firstField.id" name="@firstField.name" value="@firstField.value.getOrElse("")" class="form-control" placeholder="First Name" type="text">
+          <div class="help-block">@{firstField.error.map { error => error.message }}</div>
+          </div>
+          
+          <div class="col-sm-6">
+            <input id="@lastField.id" name="@lastField.name" value="@lastField.value.getOrElse("")" class="form-control" placeholder="Last Name" type="text">
+          <div class="help-block">@{lastField.error.map { error => error.message }}</div>
+          </div>
+          
+        </div>
+        </div>
+
+        <div class="form-group @if(emailField.hasErrors) {has-error}" >
+          <input id="@emailField.id" name="@emailField.name" value="@emailField.value.getOrElse("")" class="form-control" placeholder="E-mail" type="text">
+          <div class="help-block">@{emailField.error.map { error => error.message }}</div>
+        </div>
+        <div class="form-group @if(passwordField.hasErrors) {has-error}" >
+          <input id="@passwordField.id" name="@passwordField.name" value="@passwordField.value.getOrElse("")" class="form-control" placeholder="Password" type="password">
+          <div class="help-block">@{passwordField.error.map { error => error.message }}</div>
+        </div>
+        <div class="form-group @if(confirmField.hasErrors) {has-error}" >
+          <input id="@confirmField.id" name="@confirmField.name" value="@confirmField.value.getOrElse("")" class="form-control" placeholder="Password" type="password">
+          <div class="help-block">@{confirmField.error.map { error => error.message }}</div>
+        </div>
+        <input id="submitRegister" class="btn btn-lg btn-primary btn-block" type="submit" value="Register">
+        <p class="help-block">By clicking "Register", you agree to our <a href="@routes.Application.terms()">terms of service</a></p>
+      </fieldset>
+    }
+
+  </div>
+</div>
+<!--</div>
+</div> -->

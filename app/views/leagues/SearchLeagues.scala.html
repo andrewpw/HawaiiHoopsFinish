@@ -1,0 +1,56 @@
+@(title: String, currentPage: com.avaje.ebean.Page[models.leagues.League], loggedIn: Boolean, term: String)
+
+@import helper._
+@import bootstrap3._
+
+@Main(title, loggedIn) {
+    <div class="container">
+    <div class="row-search hidden-xs">
+    <div class="col-md-4">
+    
+  <!--IMPLEMENT LATER
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Sort By<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="@routes.Leagues.allLeagues("startDate asc", 0)">Start Date</a></li>
+        <li><a href="@routes.Leagues.allLeagues("leagueName asc", 0)">Name</a>
+      </ul>
+    </div>-->
+     
+ <h2>You searched for:  "@term"</h2>
+      </div>
+ 
+    <table class="table table-striped table-hover">
+      <thead>
+         <tr>
+             <th>Name</th>
+            <th>Start Date</th>
+            <th># of Teams</th>
+            <th class="hidden-xs">Location</th>
+         </tr>
+      </thead>
+      <tbody data-link="row" class="rowlink">
+        @for(league <- currentPage.getList()) {
+         @if(league.getId() != 1){
+         <tr>
+            <td><a href="@routes.Leagues.leagues(league.getId)">@league.getLeagueName()</a></td>
+            <td>@league.getStartDate()</td>
+            <td>@league.getNumTeamsInLeague() of @league.getNumTeams()</td>
+            @if(league.getCourt != null){
+            <td class="hidden-xs">@league.getCourt().getName()</td>
+            }
+            @if(league.getCourt == null){
+            <td class="hidden-xs"></td>
+            } 
+         </tr>
+         }
+        }
+      </tbody>
+   </table>
+   
+  
+    </div>
+    </div>
+}

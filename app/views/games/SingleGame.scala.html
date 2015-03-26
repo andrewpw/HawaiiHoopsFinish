@@ -1,0 +1,121 @@
+@(title: String, game: models.games.Game, isLoggedIn: Boolean)
+
+@scripts = {
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/games.css")">
+}
+
+@Main(title + game.getName(), isLoggedIn, scripts) {
+    <div class="container">
+    <div class="visible-xs">
+            @if(game.getType() == "Public"){
+            <a href="@routes.Games.joinPublic(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+                Join
+            </a>
+            } else {
+            <a href="@routes.Games.joinPrivate(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+                Ask To Join
+            </a>
+            }       
+            <hr>
+        </div>
+ 
+  
+   <div class="row">
+    <div class="col-md-9">
+        <div class="well">
+        <h2>@game.getName</h2>
+        <hr>
+        <br/>
+        @if(game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
+            You are a part of this game.
+        <br/>
+        <br/>
+        }
+        <ul>
+        <!--  Created By: Get user who created the game -->
+        <h10>Type: </h10><i><h11>@game.getType()</h11></i></br></br>
+        <h10>Time: </h10><h11>@game.getGameTimeString()</h11></br></br>
+        <h10>Date: </h10><h11>@game.getGameDateString()</h11></br></br>
+        @if(game.getType() == "Public" || game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
+         <h10>Location: </h10><h11>@game.getLocation()</h11></br></br>
+        }
+        <!-- <h10>Frequency: </h10><i>@game.getType()</i></br></br> -->
+        <h10>Skill Level (avg years playing): </h10><h11>@game.getAvgSklLvl()</h11></br>
+        </ul>
+        </br>
+        </br>
+        </br>
+      <!-- Need to check if logged in user is user who created the game -->
+      @if(Secured.getUserInfo(ctx()).getName() == game.getCreator().getName()) {
+        <a href="@routes.Games.editGame(game.getId, game.getName())">Edit</a>
+      }
+        <ul>
+        <h10>Created: </h10>@game.getDateCreated()</br></br>
+        <h10>Created by: </h10>@game.getCreator().getName()</br></br>
+        @if(game.getDateEdit() != null) {
+        <h10>Update Count: </h10>@game.getUpdateCount()</br></br>
+        <h10>Last Updated: </h10>@game.getDateEdit()</br></br>
+        }
+        
+        
+        </ul>
+        
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="well">
+        
+        <div class="hidden-xs">
+        @if(game.getPlayers().contains(Secured.getUserInfo(ctx()).getName())) {
+            <a data-toggle="modal" href="#unjoin" type="button" class="btn btn-primary btn-lg btn-block">
+                Unjoin
+            </a>
+           
+        } else {
+            @if(game.getType() == "Public"){
+            <a href="@routes.Games.joinPublic(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+                Join
+            </a>
+            } else {
+            <a href="@routes.Games.joinPrivate(game.getId, game.getName())" type="button" class="btn btn-primary btn-lg btn-block">
+                Ask To Join
+            </a>
+            }       
+        }
+            <hr>
+        </div>
+        
+        Players Attending:<br/>
+        <ul>
+         @for(player <- game.getPlayerProfiles) {
+            <li><a href="@routes.Players.playerProfile(player.getId)">@player.getUser.getName</a></li>
+         }
+         @for(player <- game.getNoProfile) {
+            <li>@player</li>
+         }
+        </ul>
+        </div>
+    </div>
+   </div>
+   </div>
+   <!-- TODO do modal dialog -->
+    <div id="unjoin" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Are you sure you want to unjoin?</h4>
+      </div>
+      <div class="modal-body">
+        <p>Your name will be removed from the list of players attending.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a href="@routes.Games.unjoin(game.getId, game.getName())" type="button" class="btn btn-danger">Unjoin</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+}
+

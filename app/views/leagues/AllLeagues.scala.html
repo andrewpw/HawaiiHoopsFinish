@@ -1,0 +1,115 @@
+@(title: String, currentPage: com.avaje.ebean.Page[models.leagues.League], sort: String, 
+searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
+
+@import helper._
+@import bootstrap3._
+
+@scripts = {
+    <!--  Tablesorter doesn't seem to be working now, will fix later -->
+    <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript" ></script>
+    <script src="@routes.Assets.at("javascripts/jquery.tablesorter.js")" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function() 
+    	    { 
+    	        $("#teamTable").tablesorter(); 
+    	    } 
+    	);
+    </script>  
+}
+
+@Main(title, loggedIn, scripts) {
+    <div class="container">
+    <div class="well">
+    <div class="row-search hidden-xs">
+    <div class="col-md-4">
+    
+        @form(routes.Leagues.searchLeagues(0), 'class -> "form-inline") {
+        <div class="input-group">
+            @bootstrap3.simpleText(searchForm("term"),
+                placeholder = "Search by League name or start date",
+                label = "",
+                help = "")
+                
+             <span class="input-group-btn">
+              <div class="form-group">
+                  <button type="submit" id="submitButton" class="btn btn-primary glyphicon glyphicon-search"></button>
+              </div>
+              </span>
+            </div>       
+         
+        }
+    </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Sort By<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="@routes.Leagues.allLeagues("startDate asc", 0)">Start Date</a></li>
+        <li><a href="@routes.Leagues.allLeagues("leagueName asc", 0)">Name</a>
+      </ul>
+    </div>
+  
+    <a href="@routes.Leagues.leagues(1)" class="btn btn-primary btn-md pull-right" role="button">Create a League</a> </br>
+      </div>
+ 
+    <table id="#teamTable" class="table">
+      <thead>
+         <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th># of Teams</th>
+            <th class="hidden-xs">Location</th>
+         </tr>
+      </thead>
+      <tbody data-link="row" class="rowlink">
+        @for(league <- currentPage.getList()) {
+         @if(league.getPubOrPrivate().equals("public")  && league.getId() != 1){
+         <tr>
+            <td><a href="@routes.Leagues.leagues(league.getId)">@league.getLeagueName()</a></td>
+            <td>@league.getStartDate()</td>
+            <td>@league.getNumTeamsInLeague() of @league.getNumTeams()</td>
+            @if(league.getCourt != null){
+            <td class="hidden-xs">@league.getCourt().getName()</td>
+            }
+            @if(league.getCourt == null){
+            <td class="hidden-xs"></td>
+            }
+         </tr>
+         }
+        }
+      </tbody>
+   </table>
+   
+   <div id="pagination" class="pagination">
+          <ul class="pagination">
+            @if(currentPage.hasPrev) {
+                <li class="prev">
+                <a href="@routes.Leagues.allLeagues(sort, currentPage.getPageIndex-1)">&laquo;</a>
+                </li>
+            } else {
+                <li class="prev disabled">
+                    <a>&laquo;</a>
+                </li>
+            }
+            @for(index <- 0 until currentPage.getTotalPageCount()) {
+                <li class="current">
+                
+                  <a href="@routes.Leagues.allLeagues(sort, index)">@(index+1)</a>
+                
+                </li>
+            }
+            @if(currentPage.hasNext) {
+                <li class="next">
+                  <a href="@routes.Leagues.allLeagues(sort, currentPage.getPageIndex+1)">&raquo;</a>
+                </li>
+            } else {
+                <li class="next disabled">
+                    <a> &raquo;</a>
+                </li>
+            }
+          </ul>
+        </div>
+    </div>
+    </div>
+}

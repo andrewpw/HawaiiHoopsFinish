@@ -1,0 +1,10 @@
+@(field: Field, placeholder: String)
+
+
+<div class="form-group">
+    <input type="text" class="form-control" 
+           id="@field.id"
+           name="@field.name"
+           placeholder="@placeholder"
+           value="@field.value.getOrElse("")">
+  </div>
