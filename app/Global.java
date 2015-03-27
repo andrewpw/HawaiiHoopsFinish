@@ -23,6 +23,7 @@ import static play.mvc.Results.*;
  */
 public class Global extends GlobalSettings {
 
+  
 
     /**
      * Checks if the request matches any methods. If not it will return a custom 404 page.
