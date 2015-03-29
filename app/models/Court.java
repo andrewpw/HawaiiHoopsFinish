@@ -35,7 +35,7 @@ public class Court extends Model
 
     private String fax;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     /** court specifics **/
