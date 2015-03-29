@@ -1,4 +1,4 @@
-This repository contains the source code for [http://hawaiihoops.scotthonda.cloudbees.net/](http://hawaiihoops.scotthonda.cloudbees.net/).
+This repository contains the source code for [hawaiihoops.herokuapp.com](http://hawaiihoops.herokuapp.com/).
 
 ## What is Hawaii Hoops?
 Hawaii Hoops is a social network for basketball players on Oahu. The website's mission is to make it easy for players to not only connect to one another but to find local teams, leagues, and basketball courts.
