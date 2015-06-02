@@ -1,11 +1,17 @@
 package models;
 
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import play.db.ebean.Model;
 import forms.RegistrationForm;
-import javax.persistence.*;
-import java.util.Date;
 
 /**
  * A simple representation of a user.
@@ -38,7 +44,7 @@ public class User extends Model {
     private DateTime timestamp;
 
     @OneToMany(mappedBy="author")
-    private Review review;
+    private List<Review> review;
 
     // timestamp when the users password needs to be changed
     // private Date pass_expiration;

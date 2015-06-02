@@ -1,10 +1,15 @@
 package models;
 
-import com.avaje.ebean.Page;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.joda.time.DateTime;
 import play.db.ebean.Model;
-import javax.persistence.*;
-import java.util.List;
+import com.avaje.ebean.Page;
 
 
 /**
@@ -22,7 +27,7 @@ public class Review extends Model {
     @ManyToOne
     private User author;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String review;
 
     private Long rating;

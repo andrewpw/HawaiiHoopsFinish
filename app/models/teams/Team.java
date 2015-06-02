@@ -1,24 +1,23 @@
 package models.teams;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Expr;
-import com.avaje.ebean.Page;
-import com.avaje.ebean.Query;
 import models.Comment;
 import models.Player;
 import models.leagues.League;
 import play.db.ebean.Model;
 import views.formdata.teams.TeamForm;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Page;
+import com.avaje.ebean.Query;
 
 /**
  * Model of a Team object.
@@ -44,27 +43,32 @@ public class Team extends Model {
   private String roster;
   private String description;
   private String imageUrl;
-  
+
   private String record = "0-0";
   private int wins = 0;
   private int losses = 0;
   private int pointsFor = 0;
   private int pointsAgainst = 0;
+
+  @Column(columnDefinition = "NUMERIC")
   private double threePt = 0.0;
+
+  @Column(columnDefinition = "NUMERIC")
   private double twoPt = 0.0;
+
+  @Column(columnDefinition = "NUMERIC")
   private double onePt = 0.0;
   private int rebounds = 0;
   private int steals = 0;
   private int blocks = 0;
-  
+
   private String opponents = "";
-  
+
   @OneToMany(mappedBy = "team")
   private List<Comment> comments = new ArrayList<>();
-  
-  @ManyToMany(cascade=CascadeType.ALL)
+
+  @ManyToMany(cascade = CascadeType.ALL)
   private List<League> leagues = new ArrayList<>();
-  
 
   /**
    * Default constructor.
@@ -92,7 +96,7 @@ public class Team extends Model {
     this.setDescription(description);
     this.setImageUrl(imageUrl);
   }
-  
+
   public Team(String teamName, String location, String teamType, String skillLevel, String roster, String description,
       String imageUrl, int wins, int losses, int pointsFor, int pointsAgainst) {
     this.setTeamName(teamName);
@@ -175,7 +179,7 @@ public class Team extends Model {
   public static Team getTeam(long id) {
     return find().where().eq("id", id).findUnique();
   }
-  
+
   public static Team getTeam(String name) {
     return find().where().eq("teamName", name).findUnique();
   }
@@ -291,8 +295,6 @@ public class Team extends Model {
   public String getRoster() {
     return roster;
   }
-  
-  
 
   /**
    * @return the imageUrl
@@ -318,7 +320,7 @@ public class Team extends Model {
     List<String> rosterList = java.util.Arrays.asList(roster.split("\\s*,\\s*"));
     return rosterList;
   }
-  
+
   private List<String> noProfile = new ArrayList<>();
 
   /**
@@ -364,11 +366,11 @@ public class Team extends Model {
   public String getDescription() {
     return description;
   }
-  
-  public long getId(){
+
+  public long getId() {
     return id;
   }
-  
+
   public void setId(long id) {
     this.id = id;
   }
@@ -531,35 +533,35 @@ public class Team extends Model {
   public String getOpponents() {
     return opponents;
   }
-  
+
   public String getOpponent() {
     String[] s = opponents.split("~");
     opponents = "";
     String string = s[0];
-    for(int i = 1; i < s.length; i++){
+    for (int i = 1; i < s.length; i++) {
       opponents += (s[i] + "~");
     }
     this.save();
     return string;
   }
-  
-  public void removeOpponent(String opponent){
+
+  public void removeOpponent(String opponent) {
     String[] s = opponents.split("~");
     opponents = "";
-    for(int i = 0; i < s.length; i++){
-      if(!s[i].equals(opponent)){
+    for (int i = 0; i < s.length; i++) {
+      if (!s[i].equals(opponent)) {
         opponents += (s[i] + "~");
       }
     }
     this.save();
   }
-  
-  public void addOpponent(String opponent){
+
+  public void addOpponent(String opponent) {
     opponents += (opponent + "~");
     this.save();
   }
-  
-  public void setOpponents(String opp){
+
+  public void setOpponents(String opp) {
     this.opponents = opp;
     this.save();
   }

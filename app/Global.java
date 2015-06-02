@@ -1,19 +1,25 @@
-import models.*;
+import static play.mvc.Results.badRequest;
+import static play.mvc.Results.notFound;
+import models.Address;
+import models.Court;
+import models.Hours;
+import models.Player;
+import models.User;
 import models.games.Game;
 import models.leagues.League;
 import models.leagues.LeagueDB;
 import models.teams.Team;
 import models.teams.TeamDB;
-import play.*;
-import play.mvc.*;
+import play.Application;
+import play.GlobalSettings;
+import play.Play;
+import play.libs.F.Promise;
+import play.mvc.Http.RequestHeader;
+import play.mvc.SimpleResult;
 //import play.Application;
 //import play.GlobalSettings;
 //import play.Play;
-
-import play.libs.F.*;
-import play.mvc.Http.*;
 import views.html.errors.PageNotFound;
-import static play.mvc.Results.*;
 
 /**
  * Initialization for the application. will have three player's bios.
@@ -23,6 +29,7 @@ import static play.mvc.Results.*;
  */
 public class Global extends GlobalSettings {
 
+  
 
     /**
      * Checks if the request matches any methods. If not it will return a custom 404 page.
@@ -73,37 +80,37 @@ public class Global extends GlobalSettings {
       newUser.setPlayer(player);
       newUser.update();
 
-      player =
-          Player.addPlayer("SF", "Intermediate", "Center", 10, 5, "5'5\"", "200", "Basketball, I love Basketball.",
-              "Pickup Games", "");
+//      player =
+//          Player.addPlayer("SF", "Intermediate", "Center", 10, 5, "5'5\"", "200", "Basketball, I love Basketball.",
+//              "Pickup Games", "");
+//
+//      newUser = User.addUser("Steve F.", "Steve@gmail.com", "password");
+//      newUser.setActivation_key(null);
+//      newUser.setPlayer(player);
+//      newUser.update();
 
-      newUser = User.addUser("Steve F.", "Steve@gmail.com", "password");
-      newUser.setActivation_key(null);
-      newUser.setPlayer(player);
-      newUser.update();
-
-      /**
-       * User SteveF = User.addUser("Steve", "Steve@gmail.com", "password"); SteveF.setActivation_key(null);
-       * SteveF.update();
-       * 
-       * User Loa = User.addUser("Loa", "Loa@gmail.com", "password"); Loa.setActivation_key(null); Loa.update();
-       * 
-       * User Keith = User.addUser("Keith", "Keith@gmail.com", "password"); Keith.setActivation_key(null);
-       * Keith.update();
-       * 
-       * User Hector = User.addUser("Hector", "Hector@gmail.com", "password"); Hector.setActivation_key(null);
-       * Hector.update();
-       * 
-       * 
-       * Player.addPlayer(new PlayerFormData("Steve F.", "SF", "Kapolei Park", "Beginner", "Power Forward", 15, 5,
-       * "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", "")); Player.addPlayer(new
-       * PlayerFormData("Loa P.", "LP", "Aulani Park", "Competitive", "Point Gaurd", 5, 5, "5'5\"", "200",
-       * "Basketball, I love Basketball.", "Pickup Games", "")); Player.addPlayer(new PlayerFormData("Keith A.",
-       * "Albino", "Kapiolani Park", "College", "Small Forward", 20, 5, "5'5\"", "200",
-       * "Basketball, I love Basketball.", "Pickup Games", "")); Player.addPlayer(new PlayerFormData("Hector M.",
-       * "Malaz", "Hawaii Kai Park", "Intermediate", "Shooting Gaurd", 25, 5, "5'5\"", "200",
-       * "Basketball, I love Basketball.", "Pickup Games", ""));
-       **/
+//      /**
+//       * User SteveF = User.addUser("Steve", "Steve@gmail.com", "password"); SteveF.setActivation_key(null);
+//       * SteveF.update();
+//       * 
+//       * User Loa = User.addUser("Loa", "Loa@gmail.com", "password"); Loa.setActivation_key(null); Loa.update();
+//       * 
+//       * User Keith = User.addUser("Keith", "Keith@gmail.com", "password"); Keith.setActivation_key(null);
+//       * Keith.update();
+//       * 
+//       * User Hector = User.addUser("Hector", "Hector@gmail.com", "password"); Hector.setActivation_key(null);
+//       * Hector.update();
+//       * 
+//       * 
+//       * Player.addPlayer(new PlayerFormData("Steve F.", "SF", "Kapolei Park", "Beginner", "Power Forward", 15, 5,
+//       * "5'5\"", "200", "Basketball, I love Basketball.", "Pickup Games", "")); Player.addPlayer(new
+//       * PlayerFormData("Loa P.", "LP", "Aulani Park", "Competitive", "Point Gaurd", 5, 5, "5'5\"", "200",
+//       * "Basketball, I love Basketball.", "Pickup Games", "")); Player.addPlayer(new PlayerFormData("Keith A.",
+//       * "Albino", "Kapiolani Park", "College", "Small Forward", 20, 5, "5'5\"", "200",
+//       * "Basketball, I love Basketball.", "Pickup Games", "")); Player.addPlayer(new PlayerFormData("Hector M.",
+//       * "Malaz", "Hawaii Kai Park", "Intermediate", "Shooting Gaurd", 25, 5, "5'5\"", "200",
+//       * "Basketball, I love Basketball.", "Pickup Games", ""));
+//       **/
     }
 
     if (Court.getCourts().isEmpty()) {
@@ -227,8 +234,13 @@ public class Global extends GlobalSettings {
       Player player =
           Player.addPlayer("AG", "Intermediate", "Center", 10, 5, "5'5\"", "200", "Basketball, I love Basketball.",
               "Pickup Games", "");
+      
+      User newUser = User.getUser("alex2@gmail.com");
 
-      User newUser = User.addUser("Alexander G.", "alex@gmail.com", "password");
+      if (newUser == null) {
+        newUser = User.addUser("Alexander G.", "alex2@gmail.com", "password");
+      }
+      
       newUser.setActivation_key(null);
       newUser.setPlayer(player);
       newUser.update();
