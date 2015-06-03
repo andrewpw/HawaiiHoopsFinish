@@ -30,7 +30,6 @@ public class Leagues extends Controller{
 	 */
 	@Security.Authenticated(Secured.class)
 	public static Result leagues(Long id) {
-		System.out.println("leagues id " + id);
 		League league = LeagueDB.getLeague(id);
 		List<Team> listTeam = league.getTeams();
 		LeagueForm leagueForm = new LeagueForm();
@@ -61,7 +60,7 @@ public class Leagues extends Controller{
 		return ok(LeagueSchedule.render("Create Schedule", emptyForm, Secured.isLoggedIn(ctx())));
 	}
 
-	public static void generateSchedule(League league){
+	private static void generateSchedule(League league){
 
 		List<Team> opp = league.getTeams();
 		List<Team> home = new ArrayList<Team>();
@@ -196,8 +195,7 @@ public class Leagues extends Controller{
 				listTeam = LeagueDB.getTeamsInLeague(leagueForm.get().id);
 			}
 
-			//return ok(LeagueList.render("League Team", LeagueDB.getLeague(leagueForm.get().id), leagueForm, listTeam, Secured.isLoggedIn(ctx())));
-			return redirect("/leagues/view/" + form.id);
+			return redirect(routes.Leagues.leagues(form.id));
 		}
 	}
 
