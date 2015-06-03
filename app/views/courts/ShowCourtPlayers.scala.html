@@ -1,4 +1,4 @@
-@(title: String, court: Court, nearby: List[Court],  players: com.avaje.ebean.Page[Player], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean)
+@(title: String, court: Court, nearby: List[Court],  players: com.avaje.ebean.Page[Player], reviewCount: Integer, playerCount: Integer)
 
 @import courts.CourtMain
 
@@ -54,7 +54,7 @@
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")" />
 }
 
-@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
+@CourtMain(title, court, nearby, reviewCount, playerCount, scripts) {
 
     <h3>Others Following this Court</h3>
     <div id="players">

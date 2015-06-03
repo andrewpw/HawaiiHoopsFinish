@@ -1,10 +1,10 @@
-@(title: String, game: models.games.Game, isLoggedIn: Boolean)
+@(title: String, game: models.games.Game)
 
 @scripts = {
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/games.css")">
 }
 
-@Main(title + game.getName(), isLoggedIn, scripts) {
+@Main(title + game.getName(), scripts) {
     <div class="container">
     <div class="visible-xs">
             @if(game.getType() == "Public"){

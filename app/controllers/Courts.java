@@ -37,7 +37,7 @@ public class Courts extends Controller {
      * @return a list of all courts.
      */
     public static Result index() {
-        return ok(CourtList.render("Courts", Court.getCourts(), Secured.isLoggedIn(ctx())));
+        return ok(CourtList.render("Courts", Court.getCourts()));
     }
 
     /**
@@ -106,8 +106,7 @@ public class Courts extends Controller {
                 Hours.getSchedule(id, 4),
                 Hours.getSchedule(id, 5),
                 Hours.getSchedule(id, 6),
-                Hours.getSchedule(id, 7),
-                Secured.isLoggedIn(ctx())));
+                Hours.getSchedule(id, 7)));
     }
 
     /**
@@ -135,8 +134,7 @@ public class Courts extends Controller {
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Player.page(10,0,id, user),
                 Review.size(id),
-                Court.sizePlayers(id, user),
-                Secured.isLoggedIn(ctx())));
+                Court.sizePlayers(id, user)));
     }
 
     /**
@@ -207,8 +205,7 @@ public class Courts extends Controller {
                 Court.getNearbyCourts(Court.getCourt(id).getAddress(), .5),
                 Review.page(10, 0, id),
                 Review.size(id),
-                Court.sizePlayers(id, user),
-                Secured.isLoggedIn(ctx())));
+                Court.sizePlayers(id, user)));
 
     }
 
@@ -281,8 +278,7 @@ public class Courts extends Controller {
                 "Review",
                 court,
                 Review.getRecentReviews(id),
-                formData,
-                Secured.isLoggedIn(ctx())));
+                formData));
     }
 
     /**
@@ -311,8 +307,7 @@ public class Courts extends Controller {
                     "Review",
                     Court.getCourt(id),
                     Review.getRecentReviews(id),
-                    formData,
-                    Secured.isLoggedIn(ctx())));
+                    formData));
         }
         else {
             CourtReviewForm message = formData.get();
@@ -331,7 +326,7 @@ public class Courts extends Controller {
                 Review.page(10, 0, id),
                 Review.size(id),
                 Court.sizePlayers(id, user.getPlayer()),
-                Secured.isLoggedIn(ctx())));*/
+                ));*/
         }
     }
 

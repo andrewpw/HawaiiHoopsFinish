@@ -1,4 +1,4 @@
-@(title: String, isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
+@(title: String, scripts: Html = Html(""))(content: Html)
 
 <!DOCTYPE html>
 
@@ -32,7 +32,7 @@
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                        @if(isLoggedIn) {
+                        @if(Secured.isLoggedIn(ctx())) {
                             <li><a id="courts" href="@routes.Courts.index()">Courts</a></li>
                             <li><a id="games" href="@routes.Games.allGames(0, "gameTime asc")">Games</a></li>
                             <li><a href="@routes.Leagues.allLeagues("leagueName asc", 0)">Leagues</a></li>                
@@ -41,7 +41,7 @@
                         }
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                        @if(isLoggedIn) {
+                        @if(Secured.isLoggedIn(ctx())) {
                             <li><a id="userProfile" class="navbar-text" href="@routes.Players.playerProfile(Secured.getUserInfo(ctx()).getId())">
                             <span class="glyphicon glyphicon-user"></span> @Secured.getUserInfo(ctx()).getName</a></li>
                             <li><a data-toggle="modal" href="@routes.Users.logout()">Logout</a></li>

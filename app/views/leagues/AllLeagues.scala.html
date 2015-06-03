@@ -1,5 +1,5 @@
 @(title: String, currentPage: com.avaje.ebean.Page[models.leagues.League], sort: String, 
-searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
+searchForm : Form[views.formdata.SearchFormData])
 
 @import helper._
 @import bootstrap3._
@@ -18,7 +18,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
     </script>  
 }
 
-@Main(title, loggedIn, scripts) {
+@Main(title, scripts) {
     <div class="container">
     <div class="well">
     <div class="row-search hidden-xs">

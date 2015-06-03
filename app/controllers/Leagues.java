@@ -42,7 +42,7 @@ public class Leagues extends Controller{
     }
     Form<LeagueForm> emptyForm = Form.form(LeagueForm.class).fill(leagueForm);
     
-    return ok(LeagueList.render("Leagues", league, emptyForm, listTeam, Secured.isLoggedIn(ctx())));
+    return ok(LeagueList.render("Leagues", league, emptyForm, listTeam));
   }
   
   @Security.Authenticated(Secured.class)
@@ -55,13 +55,13 @@ public class Leagues extends Controller{
 
     Page<League> currPage = League.find(st2.term, "leagueName asc", page);
 
-    return ok(SearchLeagues.render("Leagues", currPage, Secured.isLoggedIn(ctx()), st2.term));
+    return ok(SearchLeagues.render("Leagues", currPage, st2.term));
   }
  
   public static Result editSchedule(){
     LeagueForm leagueForm = new LeagueForm();
     Form<LeagueForm> emptyForm = Form.form(LeagueForm.class).fill(leagueForm);
-    return ok(LeagueSchedule.render("Create Schedule", emptyForm, Secured.isLoggedIn(ctx())));
+    return ok(LeagueSchedule.render("Create Schedule", emptyForm));
   }
   
 public static void generateSchedule(League league){
@@ -150,7 +150,7 @@ public static void generateSchedule(League league){
     LeagueDB.addLeague(league);
     LeagueForm leagueForm = new LeagueForm(league);
     Form<LeagueForm> form = Form.form(LeagueForm.class).fill(leagueForm);
-    return ok(LeagueList.render("League Team", league, form, league.getTeams(), Secured.isLoggedIn(ctx())));
+    return ok(LeagueList.render("League Team", league, form, league.getTeams()));
   }
   
   public static Result addTeam(long id){
@@ -162,7 +162,7 @@ public static void generateSchedule(League league){
     LeagueDB.addLeague(league);
     LeagueForm leagueForm = new LeagueForm(league);
     Form<LeagueForm> form = Form.form(LeagueForm.class).fill(leagueForm);
-    return ok(LeagueList.render("League Team", league, form, league.getTeams(), Secured.isLoggedIn(ctx())));
+    return ok(LeagueList.render("League Team", league, form, league.getTeams()));
   }
   
   public static Result changeSchedule(){
@@ -171,13 +171,13 @@ public static void generateSchedule(League league){
     Form<LeagueForm> leagueForm = Form.form(LeagueForm.class).bindFromRequest();
 
     if (leagueForm.hasErrors()) {
-      return badRequest(LeagueSchedule.render("Create Schedule", leagueForm, Secured.isLoggedIn(ctx())));
+      return badRequest(LeagueSchedule.render("Create Schedule", leagueForm));
     }
     else {
       LeagueForm schedule = leagueForm.get();
       //League.addSchedule(schedule);
       List<Team> listTeam = league.getTeams();
-      return ok(LeagueList.render("League Team", league, leagueForm, listTeam, Secured.isLoggedIn(ctx())));
+      return ok(LeagueList.render("League Team", league, leagueForm, listTeam));
     }
   }
   
@@ -187,7 +187,7 @@ public static void generateSchedule(League league){
     List<Team> listTeam = LeagueDB.getLeague(1).getTeams();
 
     if (leagueForm.hasErrors()) {
-      return badRequest(LeagueList.render("League Team", LeagueDB.getLeague(1), leagueForm, listTeam, Secured.isLoggedIn(ctx())));
+      return badRequest(LeagueList.render("League Team", LeagueDB.getLeague(1), leagueForm, listTeam));
     }
     else {
       LeagueForm form = leagueForm.get();
@@ -211,7 +211,7 @@ public static void generateSchedule(League league){
     LeagueForm leagueForm = new LeagueForm();
     Form<LeagueForm> emptyForm = Form.form(LeagueForm.class).fill(leagueForm);
     
-    return ok(LeagueList.render("League Team", league, emptyForm, listTeam, Secured.isLoggedIn(ctx())));
+    return ok(LeagueList.render("League Team", league, emptyForm, listTeam));
   }
   
   @Security.Authenticated(Secured.class)
@@ -221,6 +221,6 @@ public static void generateSchedule(League league){
     Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
 
     Page<League> currPage = League.find(sort, page);
-    return ok(AllLeagues.render("All leagues", currPage, sort, stuff, Secured.isLoggedIn(ctx())));
+    return ok(AllLeagues.render("All leagues", currPage, sort, stuff));
   }
 }

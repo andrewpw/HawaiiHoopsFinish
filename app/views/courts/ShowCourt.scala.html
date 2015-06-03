@@ -1,7 +1,7 @@
 
 @(title: String, court: Court, nearby: List[Court], reviewCount: Integer, playerCount: Integer,
         monday: List[Hours], tuesday: List[Hours], wednesday: List[Hours], thursday: List[Hours],
-        friday: List[Hours],sunday: List[Hours], saturday: List[Hours], isLoggedIn: Boolean)
+        friday: List[Hours],sunday: List[Hours], saturday: List[Hours])
 
 @import courts.CourtMain
 @import utils.Tags._
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/court.css")"/>
 }
 
-@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
+@CourtMain(title, court, nearby, reviewCount, playerCount, scripts) {
 
                 <img src="http://maps.googleapis.com/maps/api/staticmap?center=@court.getAddress.getLat,@court.getAddress.getLng&markers=size:mid%7Ccolor:red%7C@court.getAddress.getLat,@court.getAddress.getLng&zoom=12&size=400x100&scale=2&sensor=false" width="100%"/>
                 <!--<a href="#">view map</a>-->

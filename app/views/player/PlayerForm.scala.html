@@ -1,11 +1,11 @@
 @(title: String, playerForm : Form[views.formdata.PlayerFormData], 
-  playerSkillMap : Map[String, Boolean], playerPositionMap: Map[String, Boolean], isLoggedIn: Boolean)
+  playerSkillMap : Map[String, Boolean], playerPositionMap: Map[String, Boolean])
 
 @import helper._ 
 @import bootstrap3._
 @import models._
 
-@Main(title, isLoggedIn) {
+@Main(title) {
 <div class="container">
   @form(routes.Players.playerManageSubmit(), 'class -> "form-horizontal"){
     

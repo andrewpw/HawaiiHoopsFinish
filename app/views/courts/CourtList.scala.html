@@ -1,4 +1,4 @@
-@(title: String, courts: List[Court], isLoggedIn: Boolean)
+@(title: String, courts: List[Court])
 @import utils.Tags._
 
 @scripts = {
@@ -169,7 +169,7 @@
     <script type="text/javascript" src="@routes.Courts.javascriptRoutes()"></script>
 }
 
-@Main(title, isLoggedIn: Boolean, scripts) {
+@Main(title, scripts) {
     <div class="container">
 
 

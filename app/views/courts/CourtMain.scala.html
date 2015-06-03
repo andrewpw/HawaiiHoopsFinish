@@ -1,4 +1,4 @@
-@(title: String, court: Court, nearby: List[Court], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean, scripts: Html = Html(""))(content: Html)
+@(title: String, court: Court, nearby: List[Court], reviewCount: Integer, playerCount: Integer, scripts: Html = Html(""))(content: Html)
 
 @import helper._
 @import utils.Tags._
@@ -129,7 +129,7 @@
 
     }
 
- @Main(title, isLoggedIn, scripts2) {
+ @Main(title, scripts2) {
     <div class="container">
 
         <div class="row">
@@ -150,7 +150,7 @@
 
                 <img id="court_pic" width="100%" height="200px" src="@court.getImage" alt="..." />
 
-                @if(isLoggedIn) {
+                @if(Secured.isLoggedIn(ctx())) {
 @**                    <div class="courtInfo">
                         <button class="btn btn-primary" type="submit" style="width : 100% ;"><span class="glyphicon glyphicon-home"></span> Add Homecourt</button>
                     </div> **@

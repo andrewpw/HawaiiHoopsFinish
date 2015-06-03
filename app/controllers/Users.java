@@ -59,7 +59,7 @@ public class Users extends Controller {
                 courts = null;
             }
 
-            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, courts, Secured.isLoggedIn(ctx())));
+            return badRequest(Index.render("Hawaii Hoops Network", filledRegistrationForm, courts));
         }
         else
         {
@@ -120,7 +120,7 @@ public class Users extends Controller {
             session().clear();
             session("email", user.getEmail());
         }
-        return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
+        return ok(Validate.render("validation"));
 
     }
 
@@ -130,7 +130,7 @@ public class Users extends Controller {
      * @return The Login page.
      */
     public static Result login() {
-        return ok(Login.render("login", loginForm, Secured.isLoggedIn(ctx())));
+        return ok(Login.render("login", loginForm));
     }
 
     /**
@@ -147,7 +147,7 @@ public class Users extends Controller {
 
         if (filledLoginForm.hasErrors()) {
             flash("error", "Login credentials not valid.");
-            return badRequest(Login.render("login", filledLoginForm, Secured.isLoggedIn(ctx())));
+            return badRequest(Login.render("login", filledLoginForm));
         }
         else {
             // email/password OK, so now we set the session variable and only go to authenticated pages.

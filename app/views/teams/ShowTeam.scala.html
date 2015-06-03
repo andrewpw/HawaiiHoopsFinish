@@ -1,10 +1,10 @@
-@(title: String, team: models.teams.Team, commentForm: Form[views.formdata.CommentForm], comments: List[Comment], loggedIn: Boolean)
+@(title: String, team: models.teams.Team, commentForm: Form[views.formdata.CommentForm], comments: List[Comment])
 
 @import helper._
 @import bootstrap3._
 @import utils.Tags._
 
-@Main(title, loggedIn) {
+@Main(title) {
     <div class="container">
     <div class="well">
    <h4>@team.getTeamName()</h4>

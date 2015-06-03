@@ -1,4 +1,4 @@
-@(title: String, league: models.leagues.League, leagueForm: Form[views.formdata.leagues.LeagueForm], teamsInLeague: List[models.teams.Team], isLoggedIn: Boolean)
+@(title: String, league: models.leagues.League, leagueForm: Form[views.formdata.leagues.LeagueForm], teamsInLeague: List[models.teams.Team])
 
 @import helper._
 @import bootstrap3._
@@ -62,7 +62,7 @@
   }
 }
 
-@Main(title, isLoggedIn, scripts) {
+@Main(title, scripts) {
 
       @if(league.getId() == 1){
       <div id="leagueStart" class="modal fade" data-backdrop="static">

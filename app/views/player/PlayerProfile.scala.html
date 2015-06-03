@@ -1,10 +1,10 @@
-@(title: String, player: Player, isLoggedIn: Boolean, user: User, playerGames: List[models.games.Game], playerTeams: List[models.teams.Team]) 
+@(title: String, player: Player, user: User, playerGames: List[models.games.Game], playerTeams: List[models.teams.Team]) 
 
 @import helper._
 @import models._
 @import utils.Tags._
 
-@Main(title, isLoggedIn) { 
+@Main(title) { 
  
 <div class="container">
   <div class="row">
@@ -56,7 +56,7 @@
         <h5><small>Skill Level:</small>    @player.getSkill()</h5>
         <h5><small>Looking For:</small>   @player.getLookingFor()</h5>
         
-        @if(isLoggedIn){
+        @if(Secured.isLoggedIn(ctx())) {
             @if(user.getId() == player.getId()) {
                 <br>
                 <a href="@routes.Players.playerEdit(player.getId())" class="btn btn-primary" role="button">Edit Profile</a>

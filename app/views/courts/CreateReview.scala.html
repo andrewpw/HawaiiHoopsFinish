@@ -1,9 +1,9 @@
-@(title: String,  court: Court, reviews: List[Review], reviewForm: Form[forms.CourtReviewForm], isLoggedIn: Boolean)
+@(title: String,  court: Court, reviews: List[Review], reviewForm: Form[forms.CourtReviewForm])
 
 @import helper._
 @import utils.Tags._
 
-@Main(title, isLoggedIn) {
+@Main(title) {
 <div class="container">
     <div class="row">
 
