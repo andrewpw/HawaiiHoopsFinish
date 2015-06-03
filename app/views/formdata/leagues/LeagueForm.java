@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import models.leagues.League;
-import models.teams.Team;
-import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
 @Entity

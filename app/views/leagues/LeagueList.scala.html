@@ -6,35 +6,32 @@
 
 
 @scripts = {
-  @if(league.getCourt() != null){
-    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/courts.css")">
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
-    @* <script src="@routes.Assets.at("javascripts/courts-map.js")" type="text/javascript"></script> *@
+    @if(league.getCourt() != null){
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/courts.css")">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+        @* <script src="@routes.Assets.at("javascripts/courts-map.js")" type="text/javascript"></script> *@
 
-    <script type="text/javascript">
+        <script type="text/javascript">
+            //currently set to Univeristy of Hawaii at Manoa as deafult
+            var uh = new google.maps.LatLng(21.2970, -157.8170);
+            var hawaii = new google.maps.LatLng(21.4814, -157.9464)
 
-        //currently set to Univeristy of Hawaii at Manoa as deafult
-        var uh = new google.maps.LatLng(21.2970, -157.8170);
-        var hawaii = new google.maps.LatLng(21.4814, -157.9464)
-
-        function initialize() {
-
-            setMarkers();
-            
-        }
+            function initialize() {
+                setMarkers();
+            }
         
-        var courts = [
-          '@league.getCourt().getName', @league.getCourt().getAddress.getLat, @league.getCourt().getAddress.getLng, '@league.getCourt().getDescription', @league.getCourt().getId
-        ]
+            var courts = [
+                '@league.getCourt().getName', @league.getCourt().getAddress.getLat, @league.getCourt().getAddress.getLng, '@league.getCourt().getDescription', @league.getCourt().getId
+          	]
         
-        var infowindow =  new google.maps.InfoWindow();
+            var infowindow =  new google.maps.InfoWindow();
         
-        function setMarkers() {
+            function setMarkers() {
                 var myLatLng = new google.maps.LatLng (courts[1], courts[2]);
                 var mapOptions = {
-                        //center: new google.maps.LatLng(21.2970, -157.8170),
-                        center: myLatLng,
-                        zoom: 15
+                    //center: new google.maps.LatLng(21.2970, -157.8170),
+                    center: myLatLng,
+                    zoom: 15
                 };
                 
                 var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions)
@@ -46,156 +43,152 @@
                 var description = "<b>" + courts[0] + "</b></br>" + courts[3] + "</br><a href='" + "#" + "'>more info</a>";
 
                 bindInfoWindow(marker, map, infowindow, description);
-                
-        }
+        	}
         
-        function bindInfoWindow(marker, map, infowindow, strDescription) {
-            google.maps.event.addListener(marker, 'click', function() {
-                //infowindow.close();
-                infowindow.setContent(strDescription);
-                infowindow.open(map, marker);
-            });
-        }
+	        function bindInfoWindow(marker, map, infowindow, strDescription) {
+    	        google.maps.event.addListener(marker, 'click', function() {
+        	        //infowindow.close();
+            	    infowindow.setContent(strDescription);
+            	    infowindow.open(map, marker);
+                });
+            }
         
-        google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-  }
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+    }
 }
 
 @Main(title, isLoggedIn, scripts) {
 
-      @if(league.getId() == 1){
-      <div id="leagueStart" class="modal fade" data-backdrop="static">
-          <div class="modal-dialog">
-              <div class="modal-content">
-              <div class="modal-body">
-                <h2>Create a New League</h2>
-                <h3>Add a name, dates and whether you want your league to be viewed by anyone or only the teams in the league</h3>
-                @form(routes.Leagues.addLeague(), 'class -> "form-horizontal") {
+    @if(league.getId() == 1){
+        <div id="leagueStart" class="modal fade" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h2>Create a New League</h2>
+                        <h3>Add a name, dates and whether you want your league to be viewed by anyone or only the teams in the league</h3>
+                        @form(routes.Leagues.addLeague(), 'class -> "form-horizontal") {
  
-                  @bootstrap3.hidden(leagueForm("id"),
-                    value = models.leagues.LeagueDB.size() + 1)
-                    
-                  @bootstrap3.hidden(leagueForm("regStep"),
-                    value = 1)
- 
-                  @bootstrap3.text(leagueForm("leagueName"),
-                    label = "League Name",
-                    placeholder = "The name of the league",
-                    help = "")
-                    
-                  @bootstrap3.datepicker(leagueForm("startDate"),
-                    label = "Start Date",
-                    id = "datepicker",
-                    placeholder = "Click for Calendar",
-                    help = "")
+	                        @bootstrap3.hidden(leagueForm("id"),
+	                            value = models.leagues.LeagueDB.size() + 1)
+	                    
+	                        @bootstrap3.hidden(leagueForm("regStep"),
+	                            value = 1)
+	 
+	                        @bootstrap3.text(leagueForm("leagueName"),
+	                            label = "League Name",
+	                            placeholder = "The name of the league",
+	                            help = "")
+	                    
+	                        @bootstrap3.datepicker(leagueForm("startDate"),
+	                            label = "Start Date",
+	                            id = "datepicker",
+	                            placeholder = "Click for Calendar",
+	                            help = "")
+	            
+	                        @bootstrap3.datepicker(leagueForm("endDate"),
+	                            label = "End Date",
+	                            id = "datepicker2",
+	                            placeholder = "Click for Calendar",
+	                            help = "")
+	                    
+	                        @bootstrap3.radiobuttons(leagueForm("pubOrPrivate"), 
+	                            label = "Public or Private League",
+	                            buttonNameList = models.leagues.League.typeOfLeague(),
+	                            help = "")
             
-                  @bootstrap3.datepicker(leagueForm("endDate"),
-                    label = "End Date",
-                    id = "datepicker2",
-                    placeholder = "Click for Calendar",
-                    help = "")
-                    
-                  @bootstrap3.radiobuttons(leagueForm("pubOrPrivate"), 
-                    label = "Public or Private League",
-                    buttonNameList = models.leagues.League.typeOfLeague(),
-                    help = "")
             
-            
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button id="submitButton" id="leagueStart2" type="submit" class="btn btn-primary pull-left">
-                        Next
-                      </button>
-                      <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button id="submitButton" id="leagueStart2" type="submit" class="btn btn-primary pull-left">
+                                        Next
+                                    </button>
+                                    <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+                                </div>
+                            </div>    
+                        }
                     </div>
-                  </div>    
-                }
-              </div>
-              </div>
-          </div>
-      </div>
-      <script type="text/javascript">
-        $(window).load(function(){
-          $('#leagueStart').modal('show');
-        });
-      </script>
-      }
-      @if(league.getRegStep() == 1){
-      <div id="leagueStart2" class="modal fade" data-backdrop="static"> 
-          <div class="modal-dialog">
-              <div class="modal-content">
-              <div class="modal-body">
-                <h2>Edit your league</h2>
-                <h3>Select the number of teams and the number of games for this league</h3>
-                @form(routes.Leagues.editLeague(league.getId()), 'class -> "form-horizontal") {
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(window).load(function(){
+                $('#leagueStart').modal('show');
+            });
+        </script>
+    }
+    @if(league.getRegStep() == 1){
+        <div id="leagueStart2" class="modal fade" data-backdrop="static"> 
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h2>Edit your league</h2>
+                        <h3>Select the number of teams for this league</h3>
+                        @form(routes.Leagues.editLeague(league.getId()), 'class -> "form-horizontal") {
  
-                  @bootstrap3.selectInt(leagueForm("numTeams"),
-                    label = "Number of Teams",
-                    optionMap = models.leagues.League.num(),
-                    isMultiple = false,
-                    help = "")
-                    
-                  <!--@bootstrap3.selectInt(leagueForm("numGames"),
-                    label = "Number of Games per Team",
-                    optionMap = models.leagues.League.num(),
-                    isMultiple = false,
-                    help = "")-->
+                            @bootstrap3.selectInt(leagueForm("numTeams"),
+                                label = "Number of Teams",
+                                optionMap = models.leagues.League.num(),
+                                isMultiple = false,
+                                help = "")
                   
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button id="submitButton" type="submit" class="btn btn-primary pull-left">
-                        Next
-                      </button>
-                      <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button id="submitButton" type="submit" class="btn btn-primary pull-left">
+                                        Next
+                                    </button>
+                                    <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+                                </div>
+                            </div>    
+                        }
                     </div>
-                  </div>    
-                }
-              </div>
-              </div>
-          </div>
-      </div>
-      <script type="text/javascript">
-        $(window).load(function(){
-          $('#leagueStart2').modal('show');
-        });
-      </script> 
-      }
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(window).load(function(){
+                $('#leagueStart2').modal('show');
+            });
+        </script> 
+    }
       
-      @if(league.getRegStep() == 3){
-      <div id="leagueStart3" class="modal fade" data-backdrop="static"> 
-          <div class="modal-dialog">
-              <div class="modal-content">
-              <div class="modal-body">
-                <h2>Edit your league</h2>
-                <h3>Select a team from our database or add your own team</h3>
-                @form(routes.Leagues.editLeague(league.getId()), 'class -> "form-horizontal") {
- 
-                  @bootstrap3.select(leagueForm("teams"),
-                    label = "Select a team from our database",
-                    optionMap = models.leagues.League.getTeamMap(),
-                    isMultiple = true,
-                    help = "")
-                    
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button id="submitButton" type="submit" class="btn btn-primary pull-left">
-                        Next
-                      </button>
-                      <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+    @if(league.getRegStep() == 3){
+        <div id="leagueStart3" class="modal fade" data-backdrop="static"> 
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h2>Edit your league</h2>
+                        <h3>Select teams from our database or add your own team</h3>
+        	            @form(routes.Leagues.editLeague(league.getId()), 'class -> "form-horizontal") {
+			                <div class="panel panel-primary">
+                                <div class="panel-body" style="height: 200px; overflow-y: scroll;">
+                                    @bootstrap3.checkboxes(leagueForm("teams"),
+                                        label = "Select teams from our database",
+                                        checkboxMap = models.leagues.League.getTeamMap(),
+                                        help = "",
+                                        vertical = true)
+                                </div>
+                            </div>
+                  
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button id="submitButton" type="submit" class="btn btn-primary pull-left">
+                                        Next
+                                    </button>
+                                    <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+                                </div>
+                            </div>
+        	            }
                     </div>
-                  </div>    
-                }
-              </div>
-              </div>
-          </div>
-      </div>
-      <script type="text/javascript">
-        $(window).load(function(){
-          $('#leagueStart3').modal('show');
-        });
-      </script> 
-      }
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(window).load(function(){
+                $('#leagueStart3').modal('show');
+            });
+        </script> 
+    }
       @if(league.getRegStep() == 2){
       <div id="leagueStart4" class="modal fade" data-backdrop="static"> 
           <div class="modal-dialog">
@@ -322,41 +315,45 @@
         }
       </div>
       
-      <div class="col-md-4">
+    <div class="col-md-4">
         <div class="well">
-          <a data-toggle="modal" href="#joinTeam" type="button" class="btn btn-primary">
-            Join as a Team
-          </a>
+            <a data-toggle="modal" href="#joinTeam" type="button" class="btn btn-primary">
+                Join as a Team
+            </a>
         </div>
-      </div>
+    </div>
       
-      <div id="joinTeam" class="modal fade" data-backdrop="static"> 
-          <div class="modal-dialog">
-              <div class="modal-content">
-              <div class="modal-body">
-                <h2>Edit your league</h2>
-                <h3>Select a team from our database</h3>
-                @form(routes.Leagues.addTeam(league.getId()), 'class -> "form-horizontal") {
+    <div id="joinTeam" class="modal fade" data-backdrop="static"> 
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h2>Edit your league</h2>
+                    <h3>Select a team from our database</h3>
+                    @form(routes.Leagues.addTeam(league.getId()), 'class -> "form-horizontal") {
  
-                  @bootstrap3.select(leagueForm("teams"),
-                    label = "Select a team from our database",
-                    optionMap = models.leagues.League.getTeamMap(),
-                    isMultiple = true,
-                    help = "")
+                        <div class="panel panel-primary">
+                            <div class="panel-body" style="height: 200px; overflow-y: scroll;">
+                                @bootstrap3.checkboxes(leagueForm("teams"),
+                                    label = "Select teams from our database",
+                                    checkboxMap = models.leagues.League.getTeamMap(),
+                                    help = "",
+                                    vertical = true)
+                            </div>
+                        </div>
                     
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button id="submitButton" type="submit" class="btn btn-primary pull-left">
-                        Next
-                      </button>
-                      <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
-                    </div>
-                  </div>    
-                }
-              </div>
-              </div>
-          </div>
-      </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button id="submitButton" type="submit" class="btn btn-primary pull-left">
+                                    Next
+                                </button>
+                                <a href="" data-dismiss="modal" class="btn btn-primary pull-right" role="button">Cancel</a>
+                            </div>
+                        </div>    
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
       
       <div class="col-offset-8 col-md-4">
         <div class="well">
