@@ -139,7 +139,7 @@ public class Leagues extends Controller{
 			league.setDescription(tempForm.get().description);
 			league.setRegStep(5);
 			break;
-		case 5:
+		default:
 			break;
 		}
 
