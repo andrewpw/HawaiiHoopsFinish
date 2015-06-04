@@ -3,6 +3,7 @@ package views.formdata;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Court;
 import models.Player;
 import play.data.validation.ValidationError;
 
@@ -14,7 +15,7 @@ public class PlayerFormData {
   public long id;
   public String name;
   public String nickname;
-  public String homeCourt;
+  public Court homeCourt;
   public String skill;
   public String position;
   public long rating;
@@ -26,15 +27,14 @@ public class PlayerFormData {
   public String picUrl;
   
   /**
-   * constructor for a new player.
-   * 
-   * @param name = name of player
-   * @param homeCourt = home court of player
-   * @param skill = skill level of player
-   * @param position = position of player
-   * 
+   * default constructor.
    */
-  public PlayerFormData(String name, String nickname, String homeCourt, String skill, 
+  public PlayerFormData() {}
+  
+  /**
+   * constructor for a new player.
+   */
+  public PlayerFormData(String name, String nickname, Court homeCourt, String skill, 
               String position, long rating, long votes, String height, String weight, String bio,
               String lookingFor, String picUrl) {
     super();
@@ -53,13 +53,6 @@ public class PlayerFormData {
   }
 
   /**
-   * default constructor.
-   */
-  public PlayerFormData() {
-    // constructor
-  }
-
-  /**
    * creates a new PlayerFormData object.
    * 
    * @param player player instance
@@ -67,7 +60,7 @@ public class PlayerFormData {
   public PlayerFormData(Player player) {
     this.name = player.getUser().getName();
     this.nickname = player.getNickname();
-    //this.homeCourt = player.getHomeCourt();
+    this.homeCourt = player.getHomeCourt();
     this.skill = player.getSkill();
     this.position = player.getPosition();
     this.rating = player.getRating();

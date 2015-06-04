@@ -152,7 +152,7 @@ public class Teams extends Controller {
       team.setRecord(stat.record);
       team.setThreePt(stat.threePt);
       team.setTwoPt(stat.twoPt);
-      team.setOnePt(stat.onePt);
+      team.setFreeThrow(stat.freeThrow);
       team.setRebounds(stat.rebounds);
       team.setSteals(stat.steals);
       team.setBlocks(stat.blocks);

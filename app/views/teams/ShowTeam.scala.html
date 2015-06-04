@@ -37,7 +37,7 @@
                   <li><i><label class="control-label">Record: &nbsp &nbsp</label></i>@team.getRecord()</li>
                      <li><label class="control-label">3 point %: &nbsp &nbsp</label>@team.getThreePt() %  <br></li>
                      <li><label class="control-label">2 point %: &nbsp &nbsp</label>@team.getTwoPt() %  <br></li>
-                     <li><label class="control-label">Free Throw %: &nbsp &nbsp</label>@team.getOnePt() %  <br></li>
+                     <li><label class="control-label">Free Throw %: &nbsp &nbsp</label>@team.getFreeThrow() %  <br></li>
                      <li><label class="control-label">Rebounds: &nbsp &nbsp</label>@team.getRebounds()   <br></li>
                      <li><label class="control-label">Steals: &nbsp &nbsp</label>@team.getSteals()  <br></li>
                      <li><label class="control-label">Blocks: &nbsp &nbsp</label>@team.getBlocks()  <br></li>
@@ -48,11 +48,8 @@
             <div class="tab-pane fade" id="profiles">
                <h4>Player Profiles: </h4>
                   <ul>
-                    @for(player <- team.getPlayerProfiles()) {
+                    @for(player <- team.getRoster) {
                         <li><a href="@routes.Players.playerProfile(player.getId())">@player.getUser().getName()</a></li>
-                    }
-                    @for(player <- team.getNoProfile()) {
-                        <li>@player</li>                    
                     }
                   </ul>
                  <a href="@routes.Teams.editStats(team.getId, slugify(team.getTeamName))" class="btn btn-primary btn-md pull-right" role="button">Edit Stats or Roster</a> </br>

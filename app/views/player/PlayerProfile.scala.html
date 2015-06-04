@@ -83,7 +83,7 @@
               <thead>
                  <tr>
                     <th>Team Name</th>
-                    <th>Location</th>
+                    <th>Home Court</th>
                     <th>Type</th>
                     <th>Roster Size</th>
                     <th class="hidden-xs">Skill Level</th>
@@ -94,7 +94,7 @@
                  @if(team.getRoster().contains(player.getUser.getName())) {
                  <tr>
                     <td><a href="@routes.Teams.showTeam(team.getId, slugify(team.getTeamName))">@team.getTeamName()</a></td>
-                    <td>@team.getLocation()</td>
+                    <td>@team.getHomeCourt()</td>
                     <td>@team.getTeamType()</td>
                     <td>@team.getRosterList().size()</td>
                     <td class="hidden-xs">@team.getSkillLevel()</td>

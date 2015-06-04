@@ -28,7 +28,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
         @form(routes.Teams.searchTeams(0), 'class -> "form-inline") {
         <div class="input-group">
             @bootstrap3.simpleText(searchForm("term"),
-                placeholder = "Search by Team name, location, or skill level",
+                placeholder = "Search by team name, home court, or skill level",
                 label = "",
                 help = "")
                 
@@ -46,7 +46,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
         Sort By<span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="@routes.Teams.allTeams("location asc", 0)">Location</a></li>
+        <li><a href="@routes.Teams.allTeams("homeCourt asc", 0)">Home Court</a></li>
         <li><a href="@routes.Teams.allTeams("teamType asc", 0)">Type</a></li>
         <hr>
         <li><a href="@routes.Teams.allTeams("teamName asc", 0)">All</a>
@@ -60,7 +60,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
       <thead>
          <tr>
             <th>Name</th>
-            <th>Location</th>
+            <th>Home Court</th>
             <th>Type</th>
             <th>Roster Size</th>
             <th class="hidden-xs">Skill Level</th>
@@ -70,7 +70,7 @@ searchForm : Form[views.formdata.SearchFormData], loggedIn: Boolean)
         @for(team <- currentPage.getList()) {
          <tr>
             <td><a href="@routes.Teams.showTeam(team.getId, slugify(team.getTeamName))">@team.getTeamName()</a></td>
-            <td>@team.getLocation()</td>
+            <td>@team.getHomeCourt()</td>
             <td>@team.getTeamType()</td>
             <td>@team.getRosterList().size()</td>
             <td class="hidden-xs">@team.getSkillLevel()</td>

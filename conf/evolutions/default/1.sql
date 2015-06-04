@@ -120,10 +120,9 @@ create table court_review (
 create table teams (
   id                        bigint not null,
   team_name                 varchar(255),
-  location                  varchar(255),
+  home_court                varchar(255),
   team_type                 varchar(255),
   skill_level               varchar(255),
-  roster                    varchar(255),
   description               varchar(255),
   image_url                 varchar(255),
   record                    varchar(255),
@@ -133,11 +132,13 @@ create table teams (
   points_against            integer,
   three_pt                  NUMERIC,
   two_pt                    NUMERIC,
-  one_pt                    NUMERIC,
+  free_throw                NUMERIC,
   rebounds                  integer,
   steals                    integer,
   blocks                    integer,
+  assists                   integer,
   opponents                 varchar(255),
+  captain_id                bigint,
   constraint pk_teams primary key (id))
 ;
 
@@ -166,6 +167,12 @@ create table court_hours_courts (
   court_hours_id                 bigint not null,
   courts_id                      bigint not null,
   constraint pk_court_hours_courts primary key (court_hours_id, courts_id))
+;
+
+create table players_teams (
+  players_id                     bigint not null,
+  teams_id                       bigint not null,
+  constraint pk_players_teams primary key (players_id, teams_id))
 ;
 
 create table teams_league (
@@ -209,8 +216,10 @@ alter table court_review add constraint fk_court_review_author_7 foreign key (au
 create index ix_court_review_author_7 on court_review (author_id);
 alter table court_review add constraint fk_court_review_court_8 foreign key (court_id) references courts (id) on delete restrict on update restrict;
 create index ix_court_review_court_8 on court_review (court_id);
-alter table users add constraint fk_users_player_9 foreign key (player_id) references players (id) on delete restrict on update restrict;
-create index ix_users_player_9 on users (player_id);
+alter table teams add constraint fk_teams_captain_9 foreign key (captain_id) references players (id) on delete restrict on update restrict;
+create index ix_teams_captain_9 on teams (captain_id);
+alter table users add constraint fk_users_player_10 foreign key (player_id) references players (id) on delete restrict on update restrict;
+create index ix_users_player_10 on users (player_id);
 
 
 
@@ -221,6 +230,10 @@ alter table courts_players add constraint fk_courts_players_players_02 foreign k
 alter table court_hours_courts add constraint fk_court_hours_courts_court_h_01 foreign key (court_hours_id) references court_hours (id) on delete restrict on update restrict;
 
 alter table court_hours_courts add constraint fk_court_hours_courts_courts_02 foreign key (courts_id) references courts (id) on delete restrict on update restrict;
+
+alter table players_teams add constraint fk_players_teams_players_01 foreign key (players_id) references players (id) on delete restrict on update restrict;
+
+alter table players_teams add constraint fk_players_teams_teams_02 foreign key (teams_id) references teams (id) on delete restrict on update restrict;
 
 alter table teams_league add constraint fk_teams_league_teams_01 foreign key (teams_id) references teams (id) on delete restrict on update restrict;
 
@@ -249,6 +262,8 @@ drop table if exists league;
 drop table if exists teams_league;
 
 drop table if exists players;
+
+drop table if exists players_teams;
 
 drop table if exists court_review;
 

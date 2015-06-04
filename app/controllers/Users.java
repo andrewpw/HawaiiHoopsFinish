@@ -76,13 +76,6 @@ public class Users extends Controller {
 
             user.setActivation_key(validation_key);
             user.setTimestamp(new DateTime());
-            /** TODO **/
-            Player player = Player.addPlayer("", "-", "-", 0, 0, "",
-                    "", "", "", "");
-            user.setPlayer(player);
-            user.update();
-
-
 
             MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
             mail.setSubject("Validation Email");
@@ -93,8 +86,6 @@ public class Users extends Controller {
             mail.sendHtml("Thank you for registering with Hawaii Hoops Network! Connecting Hawaii's b-ballers with teams and leagues. \n"
                     + "<html><a href='" + url + "'>Click here to confirm registration.</a></html>");
 
-            //session().clear();
-            //session("email", user.getEmail());
             flash("registered", "Thank you for signing up with Hawaii Hoops Network! Check your email for a verification link before logging in.");
             return redirect(routes.Application.index());
         }
@@ -119,6 +110,10 @@ public class Users extends Controller {
             user.update();
             session().clear();
             session("email", user.getEmail());
+            Player player = Player.addPlayer(user, "", "-", "-", 0, 0, "",
+                    "", "", "", "");
+            user.setPlayer(player);
+            user.update();
         }
         return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
 

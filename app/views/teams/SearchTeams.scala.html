@@ -15,7 +15,7 @@
         Sort By<span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="@routes.Teams.allTeams("location asc", 0)">Location</a></li>
+        <li><a href="@routes.Teams.allTeams("homeCourt asc", 0)">Home Court</a></li>
         <li><a href="@routes.Teams.allTeams("teamType asc", 0)">Type</a></li>
         <hr>
         <li><a href="@routes.Teams.allTeams("teamName asc", 0)">All</a>
@@ -29,7 +29,7 @@
       <thead>
          <tr>
             <th>Name</th>
-            <th>Location</th>
+            <th>Home Court</th>
             <th>Type</th>
             <th>Roster Size</th>
             <th class="hidden-xs">Skill Level</th>
@@ -39,7 +39,7 @@
         @for(team <- currentPage.getList()) {
          <tr>
             <td><a href="@routes.Teams.showTeam(team.getId, slugify(team.getTeamName))">@team.getTeamName()</a></td>
-            <td>@team.getLocation()</td>
+            <td>@team.getHomeCourt()</td>
             <td>@team.getTeamType()</td>
             <td>@team.getRosterList().size()</td>
             <td class="hidden-xs">@team.getSkillLevel()</td>

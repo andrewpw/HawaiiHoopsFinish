@@ -2,6 +2,8 @@ package views.formdata.teams;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import models.Player;
 import models.teams.Team;
 import play.data.validation.ValidationError;
 
@@ -10,11 +12,12 @@ public class StatForm {
   public String record;
   public double threePt;
   public double twoPt;
-  public double onePt;
+  public double freeThrow;
   public int rebounds;
   public int steals;
   public int blocks;
-  public String roster;
+  public int assists;
+  public List<Player> roster = new ArrayList<>();
 
   public StatForm() {
   }
@@ -23,10 +26,11 @@ public class StatForm {
     this.record = team.getRecord();
     this.threePt = team.getThreePt();
     this.twoPt = team.getTwoPt();
-    this.onePt = team.getOnePt();
+    this.freeThrow = team.getFreeThrow();
     this.rebounds = team.getRebounds();
     this.steals = team.getSteals();
     this.blocks = team.getBlocks();
+    this.assists = team.getAssists();
     this.roster = team.getRoster();
   }
 

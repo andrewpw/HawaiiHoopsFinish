@@ -69,11 +69,14 @@
                         placeholder = "80",
                         help = "")
                         
-                    @bootstrap3.textarea(statForm("roster"),
-                        rows = "6",
-                        label = "Add/Remove players",
-                        placeholder = "",
-                        help = "Please separate player names with a comma.")
+                    <div class="panel panel-primary">
+                        <div class="panel-body" style="height: 200px; overflow-y: scroll;">
+                            @bootstrap3.checkboxes(statForm("roster"),
+                                label = "Select teams",
+                                checkboxMap = models.Player.getPlayerMap(),
+                                help = "")
+                         </div>
+                    </div>    
                         
                      <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
