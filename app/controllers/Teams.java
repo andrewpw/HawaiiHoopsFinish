@@ -1,12 +1,12 @@
 package controllers;
 
 import java.util.List;
-import com.avaje.ebean.Page;
+
 import models.Comment;
 import models.teams.Team;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.data.Form;
 import utils.Tags;
 import views.formdata.CommentForm;
 import views.formdata.SearchFormData;
@@ -14,9 +14,11 @@ import views.formdata.teams.StatForm;
 import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
-import views.html.teams.ShowTeam;
-import views.html.teams.SearchTeams;
 import views.html.teams.EditTeamStats;
+import views.html.teams.SearchTeams;
+import views.html.teams.ShowTeam;
+
+import com.avaje.ebean.Page;
 
 /**
  * Implements the controllers for this application.
