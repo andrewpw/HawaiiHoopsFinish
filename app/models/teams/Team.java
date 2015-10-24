@@ -96,7 +96,7 @@ public class Team extends Model {
 	 * @param roster roster
 	 * @param description description
 	 */
-	public Team(Player captain, String teamName, String homeCourt, String teamType, String skillLevel, List<Player> roster, String description,
+	public Team(Player captain, String teamName, String homeCourt, String teamType, String skillLevel, String description,
 			String imageUrl) {
 		this.captain = captain;
 		this.setTeamName(teamName);
@@ -119,7 +119,7 @@ public class Team extends Model {
 		long id = tf.id;
 
 		if (!isTeam(id)) {
-			team = new Team(tf.captain, tf.teamName, tf.homeCourt, tf.teamType, tf.skillLevel, tf.roster, tf.description, tf.imageUrl);
+			team = new Team(tf.captain, tf.teamName, tf.homeCourt, tf.teamType, tf.skillLevel, tf.description, tf.imageUrl);
 			team.save();
 		}
 		else {
@@ -129,7 +129,6 @@ public class Team extends Model {
 			team.setHomeCourt(tf.homeCourt);
 			team.setTeamType(tf.teamType);
 			team.setSkillLevel(tf.skillLevel);
-			team.setRoster(tf.roster);
 			team.setDescription(tf.description);
 			team.setImageUrl(tf.imageUrl);
 			team.setWins(tf.wins);
@@ -139,6 +138,12 @@ public class Team extends Model {
 			team.save();
 		}
 	}
+	
+	public void addPlayer(Player player){
+	    if(!roster.contains(player)){
+	      roster.add(player);
+	    }
+	  }
 
 	/**
 	 * Used in Global.java

@@ -38,17 +38,20 @@ public class Application extends Controller {
 
         if(Secured.isLoggedIn(ctx())) {
             User user = Secured.getUserInfo(ctx());
-            courts = user.getPlayer().getCourts();
+            if (user == null) {
+            	session().clear();
+            }
+            if (user != null && user.getPlayer() != null) {
+            	courts = user.getPlayer().getCourts();
+            }
+            else {
+            	courts = null;
+            }
         } else {
             courts = null;
         }
         return ok(Index.render("Hawaii Hoops Network", registrationForm, courts , Secured.isLoggedIn(ctx())));
     }
-  
-  /*public static Result home() {
-    List<Game> games = Game.getGames();
-    return ok(Home.render("Home", games, Secured.isLoggedIn(ctx())));
-  }*/
 
     /**
      * Returns the terms of use page.

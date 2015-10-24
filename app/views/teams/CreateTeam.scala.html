@@ -32,11 +32,14 @@
             placeholder = "The skill level of the team",
             help = "")
        
-       @bootstrap3.textarea(teamForm("roster"),
-              rows = "6",
-              label = "Roster",
-              placeholder = "Who is on your team?",
-              help = "Please separate players with a comma.")
+       <div class="panel panel-primary">
+           <div class="panel-body" style="height: 200px; overflow-y: scroll;">
+               @bootstrap3.checkboxes(teamForm("roster"),
+                   label = "Select players",
+                   checkboxMap = models.Player.getPlayerMap(),
+                   help = "")
+           </div>
+       </div>
             
        @bootstrap3.textarea(teamForm("description"),
               rows = "6",

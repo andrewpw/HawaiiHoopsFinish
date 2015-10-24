@@ -168,7 +168,7 @@ public class Player extends Model {
 		Map<String, Boolean> playerMap = new TreeMap<String, Boolean>();
 		List<Player> playerList = Player.getPlayers();
 		for(int i = 0; i < playerList.size(); i++){
-			playerMap.put(playerList.get(i).getNickname(), false);
+			playerMap.put(playerList.get(i).getUser().getName(), false);
 		}
 
 		return playerMap;

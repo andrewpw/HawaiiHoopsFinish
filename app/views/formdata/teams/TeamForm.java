@@ -27,8 +27,7 @@ public class TeamForm {
   @Constraints.Required(message = "A team type is required.")
   public String teamType;
 
-  @Constraints.Required(message = "Players are required for a team, aren't they?")
-  public List<Player> roster = new ArrayList<>();
+  public List<String> roster = new ArrayList<>();
 
   public String homeCourt;
   
@@ -58,12 +57,17 @@ public class TeamForm {
 	  this.losses = team.getLosses();
 	  this.pointsAgainst = team.getPointsAgainst();
 	  this.pointsFor = team.getPointsFor();
-	  this.roster = team.getRoster();
 	  this.skillLevel = team.getSkillLevel();
 	  this.teamName = team.getTeamName();
 	  this.teamType = team.getTeamType();
 	  this.wins = team.getWins();
 	  this.captain = team.getCaptain();
+	  List<Player> roster = team.getRoster();
+	  if(roster != null){
+          for(int i = 0; i < roster.size(); i++){
+              this.roster.add(roster.get(i).getUser().getName());
+          }
+      }
   }
   
   public List<ValidationError> validate() {

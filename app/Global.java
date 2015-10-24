@@ -192,17 +192,17 @@ public class Global extends GlobalSettings {
 //          "http://www.daegu-un.pac.dodea.edu/Images/General%20photo's/warrior-head%20-%20dark%20green.jpg"));
 //    }
 //
-//    if (LeagueDB.getLeagues().size() == 0) {
-//      League league = new League("Example League");
+    if (LeagueDB.getLeagues().size() == 0) {
+        League league = new League("Example League");
 //      for(int i = 1; i <= Team.getTeams().size(); i++){
 //        league.addTeam(Team.getTeam(i));
 //      }
-//      league.setNumTeams(6);
-//      league.setCourt(Court.getCourt("University of Hawaii"));
-//      league.setStartDate("05/01/2015");
+        league.setNumTeams(6);
+        league.setCourt(Court.getCourt("University of Hawaii"));
+        league.setStartDate("05/01/2015");
 //      league.addOpponent("05/01/2015", "Kaimuki", "Kapolei");
 //      league.addOpponent("05/01/2015", "Aina-t", "Manoa");
-//      LeagueDB.addLeague(league);
+        LeagueDB.addLeague(league);
 //      
 //      League league2 = new League("Example League");
 //      for(int i = 1; i <= 4; i++){
@@ -220,7 +220,7 @@ public class Global extends GlobalSettings {
 //      league2.addOpponent("05/04/2015", "Kaimuki", "Manoa");
 //      
 //      LeagueDB.addLeague(league2);
-//    }
+    }
 
 //    if (Game.getGames().size() == 0) {
 //

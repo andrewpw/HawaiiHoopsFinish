@@ -1,8 +1,11 @@
 package controllers;
 
 import java.util.List;
+
 import com.avaje.ebean.Page;
+
 import models.Comment;
+import models.Player;
 import models.teams.Team;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -23,144 +26,152 @@ import views.html.teams.EditTeamStats;
  */
 public class Teams extends Controller {
 
-  /**
-   * Returns the All teams page listing all the teams in the database.
-   * 
-   * @param sort the sort order
-   * @param page the current page number
-   * @return AllTeams page
-   */
-  public static Result allTeams(String sort, Integer page) {
+	/**
+	 * Returns the All teams page listing all the teams in the database.
+	 * 
+	 * @param sort the sort order
+	 * @param page the current page number
+	 * @return AllTeams page
+	 */
+	public static Result allTeams(String sort, Integer page) {
 
-    SearchFormData st = new SearchFormData();
-    Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
+		SearchFormData st = new SearchFormData();
+		Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
 
-    Page<Team> currPage = Team.find(sort, page);
-    return ok(AllTeams.render("All teams", currPage, sort, stuff, Secured.isLoggedIn(ctx())));
-  }
+		Page<Team> currPage = Team.find(sort, page);
+		return ok(AllTeams.render("All teams", currPage, sort, stuff, Secured.isLoggedIn(ctx())));
+	}
 
-  /**
-   * Search method.
-   * 
-   * @param page page number.
-   * @return all teams page
-   */
-  public static Result searchTeams(Integer page) {
-    SearchFormData st = new SearchFormData();
-    Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
+	/**
+	 * Search method.
+	 * 
+	 * @param page page number.
+	 * @return all teams page
+	 */
+	public static Result searchTeams(Integer page) {
+		SearchFormData st = new SearchFormData();
+		Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
 
-    Form<SearchFormData> searcher = Form.form(SearchFormData.class).bindFromRequest();
-    SearchFormData st2 = searcher.get();
+		Form<SearchFormData> searcher = Form.form(SearchFormData.class).bindFromRequest();
+		SearchFormData st2 = searcher.get();
 
-    Page<Team> currPage = Team.find(st2.term, "teamName asc", page);
+		Page<Team> currPage = Team.find(st2.term, "teamName asc", page);
 
-    return ok(SearchTeams.render(" Teams", currPage, Secured.isLoggedIn(ctx()), st2.term));
-  }
+		return ok(SearchTeams.render(" Teams", currPage, Secured.isLoggedIn(ctx()), st2.term));
+	}
 
-  /**
-   * Returns the page containing the create team form.
-   * 
-   * @return create team form.
-   */
-  public static Result createTeam() {
-    TeamForm teamForm = new TeamForm();
-    Form<TeamForm> emptyForm = Form.form(TeamForm.class).fill(teamForm);
-    return ok(CreateTeam.render("Create Team", emptyForm, Secured.isLoggedIn(ctx())));
-  }
+	/**
+	 * Returns the page containing the create team form.
+	 * 
+	 * @return create team form.
+	 */
+	public static Result createTeam() {
+		TeamForm teamForm = new TeamForm();
+		Form<TeamForm> emptyForm = Form.form(TeamForm.class).fill(teamForm);
+		return ok(CreateTeam.render("Create Team", emptyForm, Secured.isLoggedIn(ctx())));
+	}
 
-  /**
-   * Adds a team to the database after the create team form has been filled out correctly.
-   * 
-   * @return the team page related to the team
-   */
-  public static Result addTeam() {
-    Form<TeamForm> teamForm = Form.form(TeamForm.class).bindFromRequest();
+	/**
+	 * Adds a team to the database after the create team form has been filled out correctly.
+	 * 
+	 * @return the team page related to the team
+	 */
+	public static Result addTeam() {
+		Form<TeamForm> teamForm = Form.form(TeamForm.class).bindFromRequest();
 
-    if (teamForm.hasErrors()) {
-      return badRequest(CreateTeam.render("Create Team", teamForm, Secured.isLoggedIn(ctx())));
-    }
-    else {
-      TeamForm tf = teamForm.get();
-      Team.addTeam(tf);
-      Team newTeam = Team.getTeam(tf.teamName);
-      return redirect(routes.Teams.showTeam(newTeam.getId(), Tags.slugify(newTeam.getTeamName())));
-    }
-  }
+		if (teamForm.hasErrors()) {
+			return badRequest(CreateTeam.render("Create Team", teamForm, Secured.isLoggedIn(ctx())));
+		}
+		else {
+			TeamForm tf = teamForm.get();
+			List<String> playerList = tf.roster;
+			Team.addTeam(tf);
+			Team newTeam = Team.getTeam(tf.teamName);
+			System.out.println(playerList.size());
+			for(int i = 0; i < playerList.size(); i++){
+		        if(!newTeam.getRoster().contains(Player.getPlayer(playerList.get(i)))){
+		            newTeam.addPlayer(Player.getPlayer(playerList.get(i)));
+		        }
+		    }
+			newTeam.save();
+			return redirect(routes.Teams.showTeam(newTeam.getId(), Tags.slugify(newTeam.getTeamName())));
+		}
+	}
 
-  /**
-   * Returns the page containing the teams info.
-   * 
-   * @param teamName the team name
-   * @return the team page
-   */
-  public static Result showTeam(Long id, String teamName) {
-    CommentForm cf = new CommentForm();
-    Form<CommentForm> empty = Form.form(CommentForm.class).fill(cf);
+	/**
+	 * Returns the page containing the teams info.
+	 * 
+	 * @param teamName the team name
+	 * @return the team page
+	 */
+	public static Result showTeam(Long id, String teamName) {
+		CommentForm cf = new CommentForm();
+		Form<CommentForm> empty = Form.form(CommentForm.class).fill(cf);
 
-    Team team = Team.getTeam(id);
-    List<Comment> comments = Comment.getComments(team);
-    return ok(ShowTeam.render("View Team: " + team.getTeamName(), team, empty, comments, Secured.isLoggedIn(ctx())));
-  }
+		Team team = Team.getTeam(id);
+		List<Comment> comments = Comment.getComments(team);
+		return ok(ShowTeam.render("View Team: " + team.getTeamName(), team, empty, comments, Secured.isLoggedIn(ctx())));
+	}
 
-  /**
-   * Posts a comment to the given team's board.
-   * 
-   * @param teamName the team name
-   * @return the team's page if there are no errors.
-   */
-  public static Result postComment(Long id, String teamName) {
-    Form<CommentForm> cf = Form.form(CommentForm.class).bindFromRequest();
+	/**
+	 * Posts a comment to the given team's board.
+	 * 
+	 * @param teamName the team name
+	 * @return the team's page if there are no errors.
+	 */
+	public static Result postComment(Long id, String teamName) {
+		Form<CommentForm> cf = Form.form(CommentForm.class).bindFromRequest();
 
-    Team team = Team.getTeam(id);
-    List<Comment> comments = Comment.getComments(team);
+		Team team = Team.getTeam(id);
+		List<Comment> comments = Comment.getComments(team);
 
-    if (cf.hasErrors()) {
-      return badRequest(ShowTeam.render("View Team: " + team.getTeamName(), team, cf, comments, Secured.isLoggedIn(ctx())));
-    }
-    else {
-      CommentForm com = cf.get();
+		if (cf.hasErrors()) {
+			return badRequest(ShowTeam.render("View Team: " + team.getTeamName(), team, cf, comments, Secured.isLoggedIn(ctx())));
+		}
+		else {
+			CommentForm com = cf.get();
 
-      Team team2 = Team.getTeam(id);
-      Comment.addComment(team2, Secured.getUserInfo(ctx()), com);
+			Team team2 = Team.getTeam(id);
+			Comment.addComment(team2, Secured.getUserInfo(ctx()), com);
 
-      return redirect(routes.Teams.showTeam(id, Tags.slugify(teamName)));
-    }
+			return redirect(routes.Teams.showTeam(id, Tags.slugify(teamName)));
+		}
 
-  }
+	}
 
-  public static Result editStats(Long id, String teamName) {
+	public static Result editStats(Long id, String teamName) {
 
-    Team team = Team.getTeam(id);
-    
-    StatForm st = new StatForm(team);
-    Form<StatForm> stats = Form.form(StatForm.class).fill(st);
+		Team team = Team.getTeam(id);
 
-    return ok(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, stats, Secured.isLoggedIn(ctx())));
-  }
+		StatForm st = new StatForm(team);
+		Form<StatForm> stats = Form.form(StatForm.class).fill(st);
+
+		return ok(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, stats, Secured.isLoggedIn(ctx())));
+	}
 
 
-  public static Result postStats(Long id, String teamName) {
-    Team team = Team.getTeam(id);
+	public static Result postStats(Long id, String teamName) {
+		Team team = Team.getTeam(id);
 
-    Form<StatForm> st = Form.form(StatForm.class).bindFromRequest();
+		Form<StatForm> st = Form.form(StatForm.class).bindFromRequest();
 
-    if (st.hasErrors()) {
-      return badRequest(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, st, Secured.isLoggedIn(ctx())));
-    }
-    else {
-      StatForm stat = st.get();
-      team.setRecord(stat.record);
-      team.setThreePt(stat.threePt);
-      team.setTwoPt(stat.twoPt);
-      team.setFreeThrow(stat.freeThrow);
-      team.setRebounds(stat.rebounds);
-      team.setSteals(stat.steals);
-      team.setBlocks(stat.blocks);
-      team.setRoster(stat.roster);
-      team.save();
+		if (st.hasErrors()) {
+			return badRequest(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, st, Secured.isLoggedIn(ctx())));
+		}
+		else {
+			StatForm stat = st.get();
+			team.setRecord(stat.record);
+			team.setThreePt(stat.threePt);
+			team.setTwoPt(stat.twoPt);
+			team.setFreeThrow(stat.freeThrow);
+			team.setRebounds(stat.rebounds);
+			team.setSteals(stat.steals);
+			team.setBlocks(stat.blocks);
+			team.setRoster(stat.roster);
+			team.save();
 
-      return redirect(routes.Teams.showTeam(team.getId(), Tags.slugify(teamName)));
-    }
-  }
+			return redirect(routes.Teams.showTeam(team.getId(), Tags.slugify(teamName)));
+		}
+	}
 
 }

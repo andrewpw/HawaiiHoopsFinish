@@ -76,6 +76,10 @@ public class Users extends Controller {
 
             user.setActivation_key(validation_key);
             user.setTimestamp(new DateTime());
+            Player player = Player.addPlayer(user, "", "-", "-", 0, 0, "",
+                    "", "", "", "");
+            user.setPlayer(player);
+            user.update();
 
             MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
             mail.setSubject("Validation Email");
@@ -110,10 +114,6 @@ public class Users extends Controller {
             user.update();
             session().clear();
             session("email", user.getEmail());
-            Player player = Player.addPlayer(user, "", "-", "-", 0, 0, "",
-                    "", "", "", "");
-            user.setPlayer(player);
-            user.update();
         }
         return ok(Validate.render("validation", Secured.isLoggedIn(ctx())));
 

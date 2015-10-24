@@ -51,9 +51,9 @@
             <ul class="dropdown-menu" role="menu">
                 <li><a href="@routes.Players.playerSearch("position", "Point Gaurd", "name asc", 0)">Point Gaurd</a></li>
                 <li><a href="@routes.Players.playerSearch("position", "Shooting Gaurd", "name asc", 0)">Shooting Gaurd</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 0)">Center</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 0)">Power Forward</a></li>
                 <li><a href="@routes.Players.playerSearch("position", "Small Forward", "name asc", 0)">Small Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 0)">Power Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 0)">Center</a></li>
                 <li class="divider"></li>
                 <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
@@ -85,9 +85,9 @@
             <ul class="dropdown-menu" role="menu">
                 <li><a href="@routes.Players.playerSearch("position", "Point Gaurd", "name asc", 0)">Point Gaurd</a></li>
                 <li><a href="@routes.Players.playerSearch("position", "Shooting Gaurd", "name asc", 0)">Shooting Gaurd</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 0)">Center</a></li>
-                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 0)">Power Forward</a></li>
                 <li><a href="@routes.Players.playerSearch("position", "Small Forward", "name asc", 0)">Small Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Power Forward", "name asc", 0)">Power Forward</a></li>
+                <li><a href="@routes.Players.playerSearch("position", "Center", "name asc", 0)">Center</a></li>
                 <li class="divider"></li>
                 <li><a href="@routes.Players.players("name asc", 0)">All</a></li>
             </ul>
@@ -101,33 +101,32 @@
     <table class="table table-striped table-hover">
     
         <thead>
-        @if(field == "none") {
-        <tr>
-            <th><a id="playersSortByName" href="@routes.Players.players("name asc", currentPage.getPageIndex)">Name</a></th>
-            <th><a id="playersSortByName" href="@routes.Players.players("homeCourt asc", currentPage.getPageIndex)">Court</a></th>
-            <th><a id="playersSortByName" href="@routes.Players.players("skill asc", currentPage.getPageIndex)">Skill Level</a></th>
-            <th><a id="playersSortByName" href="@routes.Players.players("position asc", currentPage.getPageIndex)">Position</a></th>
-        </tr>
-        } else {
-        <tr>
-            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "name asc", currentPage.getPageIndex)">Name</a></th>
-            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "homeCourt asc", currentPage.getPageIndex)">Court</a></th>
-            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "skill asc", currentPage.getPageIndex)">Skill Level</a></th>
-            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "position asc", currentPage.getPageIndex)">Position</a></th>
-        </tr>
-        }
+	        @if(field == "none") {
+	        <tr>
+	            <th><a id="playersSortByName" href="@routes.Players.players("name asc", currentPage.getPageIndex)">Name</a></th>
+	            <th><a id="playersSortByName" href="@routes.Players.players("homeCourt asc", currentPage.getPageIndex)">Court</a></th>
+	            <th><a id="playersSortByName" href="@routes.Players.players("skill asc", currentPage.getPageIndex)">Skill Level</a></th>
+	            <th><a id="playersSortByName" href="@routes.Players.players("position asc", currentPage.getPageIndex)">Position</a></th>
+	        </tr>
+	        } else {
+	        <tr>
+	            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "name asc", currentPage.getPageIndex)">Name</a></th>
+	            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "homeCourt asc", currentPage.getPageIndex)">Court</a></th>
+	            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "skill asc", currentPage.getPageIndex)">Skill Level</a></th>
+	            <th><a id="playersSortByName" href="@routes.Players.playerSearch(field, searchWord, "position asc", currentPage.getPageIndex)">Position</a></th>
+	        </tr>
+	        }
         </thead>
         
         <tbody data-link="row" class="rowlink">
-        @for(player <- currentPage.getList()){
-            <tr>
-                <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getUser.getName()</a></td>
-                <td>@player.getHomeCourt()</td>
-                <td>@player.getSkill()</td>
-                <td>@player.getPosition()</td>
-                
-            </tr>
-        }
+            @for(player <- currentPage.getList()){
+                <tr>
+                    <td><a id="noColor" href="@routes.Players.playerProfile(player.getId())">@player.getUser.getName()</a></td>
+                    <td>@player.getHomeCourt()</td>
+                    <td>@player.getSkill()</td>
+                    <td>@player.getPosition()</td>
+                </tr>
+            }
         </tbody>
         
     </table>
