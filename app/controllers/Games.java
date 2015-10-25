@@ -38,7 +38,7 @@ public class Games extends Controller {
     Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(sfd);
 
     Page<Game> games = Game.find("gameTime asc", page);
-    return ok(AllGames.render("All Games", games, stuff, Secured.isLoggedIn(ctx()), sort));
+    return ok(AllGames.render("All Games", games, stuff, sort));
   }
 
   /**
@@ -56,7 +56,7 @@ public class Games extends Controller {
       throw new RuntimeException("Not a valid game.");
     }
     else {
-      return ok(SingleGame.render("Game: " + game.getName(), game, Secured.isLoggedIn(ctx())));
+      return ok(SingleGame.render("Game: " + game.getName(), game));
     }
 
   }
@@ -71,7 +71,7 @@ public class Games extends Controller {
     GameForm gameForm = new GameForm();
     Form<GameForm> formdata = Form.form(GameForm.class).fill(gameForm);
 
-    return ok(CreateGame.render("Create Game", "Create", formdata, Secured.isLoggedIn(ctx())));
+    return ok(CreateGame.render("Create Game", "Create", formdata));
   }
 
   /**
@@ -85,7 +85,7 @@ public class Games extends Controller {
     Form<GameForm> gameForm = Form.form(GameForm.class).bindFromRequest();
 
     if (gameForm.hasErrors()) {
-      return badRequest(CreateGame.render("Create Game", "Create", gameForm, Secured.isLoggedIn(ctx())));
+      return badRequest(CreateGame.render("Create Game", "Create", gameForm));
     }
     else {
       GameForm game = gameForm.get();
@@ -109,7 +109,7 @@ public class Games extends Controller {
   public static Result editGame(long id, String name) {
     GameForm data = new GameForm(Game.find().byId(id));
     Form<GameForm> formdata = Form.form(GameForm.class).fill(data);
-    return ok(CreateGame.render("Edit Game", "Edit", formdata, Secured.isLoggedIn(ctx())));
+    return ok(CreateGame.render("Edit Game", "Edit", formdata));
 
   }
 
@@ -127,7 +127,7 @@ public class Games extends Controller {
     SearchFormData search = sfd2.get();
 
     Page<Game> results = Game.find(search.term, "gameTime asc", page);
-    return ok(AllGames.render("Results", results, stuff, Secured.isLoggedIn(ctx()), "date asc"));
+    return ok(AllGames.render("Results", results, stuff,  "date asc"));
   }
 
   /**
@@ -172,7 +172,7 @@ public class Games extends Controller {
     mail.sendHtml("<html> <h1>A player wants to join your game!</h1>" + "<hr><br>" + user
         + " would like to join your game " + gameName + "<br><br><a href='" + url
         + "'>Confirm</a> <br><br>If you don't want this player to join this game, ignore this email.</html>");
-    return ok(RequestSent.render("Request Sent", Secured.isLoggedIn(ctx()), gameName, id));
+    return ok(RequestSent.render("Request Sent", gameName, id));
   }
 
   /**

@@ -1,12 +1,12 @@
 package controllers;
 
 import java.util.List;
-import com.avaje.ebean.Page;
+
 import models.Comment;
 import models.teams.Team;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.data.Form;
 import utils.Tags;
 import views.formdata.CommentForm;
 import views.formdata.SearchFormData;
@@ -14,9 +14,11 @@ import views.formdata.teams.StatForm;
 import views.formdata.teams.TeamForm;
 import views.html.teams.AllTeams;
 import views.html.teams.CreateTeam;
-import views.html.teams.ShowTeam;
-import views.html.teams.SearchTeams;
 import views.html.teams.EditTeamStats;
+import views.html.teams.SearchTeams;
+import views.html.teams.ShowTeam;
+
+import com.avaje.ebean.Page;
 
 /**
  * Implements the controllers for this application.
@@ -36,7 +38,7 @@ public class Teams extends Controller {
     Form<SearchFormData> stuff = Form.form(SearchFormData.class).fill(st);
 
     Page<Team> currPage = Team.find(sort, page);
-    return ok(AllTeams.render("All teams", currPage, sort, stuff, Secured.isLoggedIn(ctx())));
+    return ok(AllTeams.render("All teams", currPage, sort, stuff));
   }
 
   /**
@@ -54,7 +56,7 @@ public class Teams extends Controller {
 
     Page<Team> currPage = Team.find(st2.term, "teamName asc", page);
 
-    return ok(SearchTeams.render(" Teams", currPage, Secured.isLoggedIn(ctx()), st2.term));
+    return ok(SearchTeams.render(" Teams", currPage, st2.term));
   }
 
   /**
@@ -65,7 +67,7 @@ public class Teams extends Controller {
   public static Result createTeam() {
     TeamForm teamForm = new TeamForm();
     Form<TeamForm> emptyForm = Form.form(TeamForm.class).fill(teamForm);
-    return ok(CreateTeam.render("Create Team", emptyForm, Secured.isLoggedIn(ctx())));
+    return ok(CreateTeam.render("Create Team", emptyForm));
   }
 
   /**
@@ -77,7 +79,7 @@ public class Teams extends Controller {
     Form<TeamForm> teamForm = Form.form(TeamForm.class).bindFromRequest();
 
     if (teamForm.hasErrors()) {
-      return badRequest(CreateTeam.render("Create Team", teamForm, Secured.isLoggedIn(ctx())));
+      return badRequest(CreateTeam.render("Create Team", teamForm));
     }
     else {
       TeamForm tf = teamForm.get();
@@ -99,7 +101,7 @@ public class Teams extends Controller {
 
     Team team = Team.getTeam(id);
     List<Comment> comments = Comment.getComments(team);
-    return ok(ShowTeam.render("View Team: " + team.getTeamName(), team, empty, comments, Secured.isLoggedIn(ctx())));
+    return ok(ShowTeam.render("View Team: " + team.getTeamName(), team, empty, comments));
   }
 
   /**
@@ -115,7 +117,7 @@ public class Teams extends Controller {
     List<Comment> comments = Comment.getComments(team);
 
     if (cf.hasErrors()) {
-      return badRequest(ShowTeam.render("View Team: " + team.getTeamName(), team, cf, comments, Secured.isLoggedIn(ctx())));
+      return badRequest(ShowTeam.render("View Team: " + team.getTeamName(), team, cf, comments));
     }
     else {
       CommentForm com = cf.get();
@@ -135,7 +137,7 @@ public class Teams extends Controller {
     StatForm st = new StatForm(team);
     Form<StatForm> stats = Form.form(StatForm.class).fill(st);
 
-    return ok(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, stats, Secured.isLoggedIn(ctx())));
+    return ok(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, stats));
   }
 
 
@@ -145,7 +147,7 @@ public class Teams extends Controller {
     Form<StatForm> st = Form.form(StatForm.class).bindFromRequest();
 
     if (st.hasErrors()) {
-      return badRequest(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, st, Secured.isLoggedIn(ctx())));
+      return badRequest(EditTeamStats.render("Edit Stats: " + team.getTeamName(), team, st));
     }
     else {
       StatForm stat = st.get();

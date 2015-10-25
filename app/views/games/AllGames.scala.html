@@ -1,4 +1,4 @@
-@(title: String, currentPage: com.avaje.ebean.Page[models.games.Game], searchForm: Form[views.formdata.SearchFormData], isLoggedIn: Boolean, sort: String)
+@(title: String, currentPage: com.avaje.ebean.Page[models.games.Game], searchForm: Form[views.formdata.SearchFormData], sort: String)
 
 @import helper._
 @import bootstrap3._
@@ -6,7 +6,7 @@
 @import utils.Tags._
 
 
-@Main(title, isLoggedIn) {
+@Main(title) {
 <div class="container">
   <div class="well">
   

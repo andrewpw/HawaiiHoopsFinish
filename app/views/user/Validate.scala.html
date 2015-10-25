@@ -1,13 +1,13 @@
-@(title: String, isLoggedIn: Boolean)
+@(title: String)
 
 @scripts = {
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/index.css")">
 }
 
-@Main(title, isLoggedIn, scripts) {
+@Main(title, scripts) {
    
    
-   @if(isLoggedIn) {
+   @if(Secured.isLoggedIn(ctx())) {
    <div class="row odd">
        <br>
        <br>
@@ -17,7 +17,7 @@
        <h1 class="validateTitle">Congratulations on Registering!</h1>
        <div class="row">
          <div class="col-md-12">
-            @if(isLoggedIn){
+            @if(Secured.isLoggedIn(ctx())){
                     <br>
                     <a href="@routes.Players.playerEdit(Secured.getUserInfo(ctx()).getId())" class="btn btn-primary btn-lg" role="button">
                     <span class="glyphicon glyphicon-user"></span>  Edit your profile @Secured.getUserInfo(ctx()).getName

@@ -42,7 +42,7 @@ public class Application extends Controller {
         } else {
             courts = null;
         }
-        return ok(Index.render("Hawaii Hoops Network", registrationForm, courts , Secured.isLoggedIn(ctx())));
+        return ok(Index.render("Hawaii Hoops Network", registrationForm, courts));
     }
   
   /*public static Result home() {
@@ -56,7 +56,7 @@ public class Application extends Controller {
      * @return the terms of use page
      */
     public static Result terms() {
-        return ok(TermsOfUse.render("Terms Of Use", Secured.isLoggedIn(ctx())));
+        return ok(TermsOfUse.render("Terms Of Use"));
     }
 
     /**
@@ -69,7 +69,7 @@ public class Application extends Controller {
         ContactUsForm contact = new ContactUsForm();
         Form<ContactUsForm> formData = Form.form(ContactUsForm.class).fill(contact);
 
-        return ok(ContactUs.render("Contact Us", formData, Secured.isLoggedIn(ctx())));
+        return ok(ContactUs.render("Contact Us", formData));
     }
 
     /**
@@ -82,7 +82,7 @@ public class Application extends Controller {
         Form<ContactUsForm> formData = Form.form(ContactUsForm.class).bindFromRequest();
 
         if (formData.hasErrors()) {
-            return badRequest(ContactUs.render("Contact Us", formData, Secured.isLoggedIn(ctx())));
+            return badRequest(ContactUs.render("Contact Us", formData));
         }
         else {
             ContactUsForm message = formData.get();
@@ -93,7 +93,7 @@ public class Application extends Controller {
             mail.setFrom(message.email);
             mail.send(message.message);
 
-            return ok(MessageSent.render("Message Sent", Secured.isLoggedIn(ctx())));
+            return ok(MessageSent.render("Message Sent"));
         }
     }
 
@@ -103,7 +103,7 @@ public class Application extends Controller {
      * @return the about us page
      */
     public static Result about() {
-        return ok(AboutUs.render("About Us", Secured.isLoggedIn(ctx())));
+        return ok(AboutUs.render("About Us"));
     }
 
 }

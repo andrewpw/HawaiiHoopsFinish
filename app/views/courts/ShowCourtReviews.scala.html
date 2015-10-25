@@ -1,4 +1,4 @@
-@(title: String, court: Court, nearby: List[Court], reviews: com.avaje.ebean.Page[Review], reviewCount: Integer, playerCount: Integer, isLoggedIn: Boolean)
+@(title: String, court: Court, nearby: List[Court], reviews: com.avaje.ebean.Page[Review], reviewCount: Integer, playerCount: Integer)
 
 @import courts.CourtMain
 
@@ -45,7 +45,7 @@
     </script>
 }
 
-@CourtMain(title, court, nearby, reviewCount, playerCount, isLoggedIn, scripts) {
+@CourtMain(title, court, nearby, reviewCount, playerCount, scripts) {
 
     <h3>Reviews</h3>
     @if(reviews.getList.isEmpty) {

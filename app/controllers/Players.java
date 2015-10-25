@@ -40,7 +40,7 @@ public class Players extends Controller{
     Player player = Player.getPlayer(id);
     List<Game> games = Game.findPlayerGames(player.getUser().getName());
     List<Team> teams = Team.getTeams();
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games, teams));
+    return ok(PlayerProfile.render("Player Profile", player, Secured.getUserInfo(ctx()), games, teams));
   }
   
   /**
@@ -58,7 +58,7 @@ public class Players extends Controller{
     player.save();
     List<Game> games = Game.findPlayerGames(player.getUser().getName());
     List<Team> teams = Team.getTeams();
-    return ok(PlayerProfile.render("Player Profile", player, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()), games, teams));
+    return ok(PlayerProfile.render("Player Profile", player, Secured.getUserInfo(ctx()), games, teams));
   }
   
   /**************************
@@ -75,7 +75,7 @@ public class Players extends Controller{
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find(sortOrder, page);
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.getUserInfo(ctx()) ));
   }
   
   /**
@@ -88,7 +88,7 @@ public class Players extends Controller{
     SearchFormData data2 = new SearchFormData();
     Form<SearchFormData> dataForm = Form.form(SearchFormData.class).fill(data2);
     Page<Player> playerPage = Player.find(field, searchWord, sortOrder, page);
-    return ok(PlayerList.render(playerPage, "PlayersList", dataForm, field, searchWord, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+    return ok(PlayerList.render(playerPage, "PlayersList", dataForm, field, searchWord, Secured.getUserInfo(ctx())));
   }
   
   /**
@@ -105,7 +105,7 @@ public class Players extends Controller{
     SearchFormData formData = data.get();
     Page<Player> playerPage = Player.find("name", formData.name, "name asc", 1);
     
-    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "name", formData.name, Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+    return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "name", formData.name, Secured.getUserInfo(ctx())));
   }
   
   /**************************
@@ -128,7 +128,7 @@ public class Players extends Controller{
     Map<String, Boolean> playerPosition = PlayerFields.getPosition();
     
     Page<Player> playerPage = Player.find("name asc", 1);
-    return ok(PlayerForm.render("Player Form", dataForm, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
+    return ok(PlayerForm.render("Player Form", dataForm, playerSkillMap, playerPosition));
   }
   
   /**
@@ -149,7 +149,7 @@ public class Players extends Controller{
     if (data.hasErrors()) {
       Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
       Map<String, Boolean> playerPosition = PlayerFields.getPosition();
-      return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
+      return badRequest(PlayerForm.render("Bad Player Form", data, playerSkillMap, playerPosition));
     }
     else {
       PlayerFormData formData = data.get();
@@ -159,7 +159,7 @@ public class Players extends Controller{
         Player.updatePlayer(formData, user.getId());
       }
       
-      return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.isLoggedIn(ctx()), Secured.getUserInfo(ctx()) ));
+      return ok(PlayerList.render(playerPage, "PlayerList", dataForm, "none", "none", Secured.getUserInfo(ctx()) ));
     }
   }
   
@@ -173,7 +173,7 @@ public class Players extends Controller{
     Map<String, Boolean> playerSkillMap = PlayerFields.getSkill();
     Map<String, Boolean> playerPosition = PlayerFields.getPosition();
     
-    return ok(PlayerForm.render("Player Form", playerFormData, playerSkillMap, playerPosition, Secured.isLoggedIn(ctx())));
+    return ok(PlayerForm.render("Player Form", playerFormData, playerSkillMap, playerPosition));
 
   }
 }

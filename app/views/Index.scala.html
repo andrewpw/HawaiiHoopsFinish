@@ -1,4 +1,4 @@
-@(title: String, registrationForm: Form[forms.RegistrationForm], courts: List[Court], isLoggedIn: Boolean)
+@(title: String, registrationForm: Form[forms.RegistrationForm], courts: List[Court])
 
 @import bootstrap3._
 @import utils.Tags._
@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/index.css")" />
 }
 
-@Main(title, isLoggedIn, scripts) {
+@Main(title, scripts) {
 
-    @if(isLoggedIn) {
+    @if(Secured.isLoggedIn(ctx())) {
 
         <div class="container logged-in">
             <div class="row">

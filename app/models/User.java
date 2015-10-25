@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,8 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
+
 import play.db.ebean.Model;
 import forms.RegistrationForm;
 
@@ -104,7 +107,7 @@ public class User extends Model {
      * @param formData RegistrationForm info.
      */
     public static User addUser(RegistrationForm formData) {
-        User user = new User(formData.first, formData.email, formData.password);
+        User user = new User(formData.first + " " + formData.last, formData.email, formData.password);
         user.save();
         return user;
     }
