@@ -39,7 +39,7 @@ public class Global extends GlobalSettings {
     public Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
         return Promise.<SimpleResult>pure(notFound(
                 PageNotFound.render()
-        ));
+        )); 
     }
 
     public Promise<SimpleResult> onBadRequest(RequestHeader request, String error) {
