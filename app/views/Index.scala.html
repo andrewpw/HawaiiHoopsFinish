@@ -13,6 +13,29 @@
 
     @if(Secured.isLoggedIn(ctx())) {
 
+<div id="disclaimer" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-body">
+                   <h3>
+                       Welcome to Hawaii Hoops Network
+                   </h3>
+                    <p>Unfortunately, this site is not fully developed and offers no security at this stage.  Feel free to poke around the site and use any
+                    features you wish, but you may encounter some bugs as this is only deployed to show some simple web design skills.  If you choose
+                    to enter your e-mail or any other personal information, we will do our best to safeguard it, be we offer no guarantees.
+                    Do so at your own risk.  If you'd like a sample profile to test with, login with "admin" and "password" as credentials.</p>
+                    <a href="" data-dismiss="modal">OK</a>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(window).load(function(){
+              $('#disclaimer').modal('show'); 
+            });
+        </script>
+
+
         <div class="container logged-in">
             <div class="row">
                 <div class="col-md-3">
